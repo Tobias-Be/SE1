@@ -1,12 +1,7 @@
 package dieBoese2;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
-import com.sun.jdi.Method;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 
 /**
  * 
@@ -87,7 +82,7 @@ public class HumanPlayer extends Player {
 		if (board.isValidMove(myMove)) {
 			board.placeFigure(myMove, figure);
 		} else {
-			System.out.println("Sie können kein Stein auf dieses Feld legen.");
+			System.out.println("Sie kï¿½nnen kein Stein auf dieses Feld legen.");
 			makeMove(board);
 		}
 	}
