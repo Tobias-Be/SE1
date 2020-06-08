@@ -34,7 +34,7 @@ int difficulty;
 	
 	protected int[] generateBlockMove(Board board) {
 		int blockedField[] = new int[2];
-<<<<<<< HEAD
+
 		int x = board.getBoardstate().length+1;
 		int y = board.getBoardstate().length+1;
 		while (!board.isValidMove(convertCoordinate(x, y))) {
@@ -42,13 +42,8 @@ int difficulty;
 			y= (int) Math.random()*board.getBoardstate().length;
 			blockedField[0] = x;
 			blockedField[1] = y;
-=======
-		int x = board.getBoardstate().length/2;
-		int y = board.getBoardstate().length/2;
-		while(!board.isValidMove(convertCoordinate(x, y))) {
-			
->>>>>>> branch 'master' of https://github.com/1923403/SE1.git
-		}
+
+}
 		
 		return blockedField;
 		
