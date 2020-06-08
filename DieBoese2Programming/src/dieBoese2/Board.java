@@ -297,13 +297,7 @@ public class Board {
 	 * @return true if win is possible with a certain boardstate, false if not
 	 * 
 	 */
-	
-	protected boolean CheckWinBoolean() {
-		if (isRunning == false) {
-			return true;
-		}
-		return false;
-	}
+
 
 	/**
 	 * 
