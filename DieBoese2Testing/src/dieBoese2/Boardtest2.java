@@ -2,7 +2,7 @@ package dieBoese2;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-
+ 
 /*
  *  @author Sarah
  *  @date 07.06.20
