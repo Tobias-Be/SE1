@@ -121,10 +121,10 @@ public class BoardTest {
 		assertFalse(board.isValidMove("z2"));
 		assertFalse(board.isValidMove("z35"));
 		assertFalse(board.isValidMove("ab"));
-		assertFalse(board.isValidMove(""));
+		assertFalse(board.isValidMove("55"));
 		assertFalse(board.isValidMove("b"));
 		assertFalse(board.isValidMove("4"));
-		assertFalse(board.isValidMove("55"));
+		assertFalse(board.isValidMove(""));
 	}
 
 	/**
