@@ -273,7 +273,7 @@ public class BoardTest {
 	@Test(expected = Exception.class)
 	public void convertCoordinatesTest6() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
-		board.convertCoordinate("-23a");
+		board.convertCoordinate("-2a");
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class BoardTest {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("f-3");
 	}
-
+	
 	/**
 	 * Test-ID Board36-5
 	 * 
@@ -295,7 +295,7 @@ public class BoardTest {
 	@Test(expected = Exception.class)
 	public void convertCoordinatesTest8() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
-		board.convertCoordinate("1");
+		board.convertCoordinate("3t-");
 	}
 
 	/**
@@ -305,6 +305,17 @@ public class BoardTest {
 	 */
 	@Test(expected = Exception.class)
 	public void convertCoordinatesTest9() throws Exception {
+		Board board = new Board(BOARD_MIN_SIZE);
+		board.convertCoordinate("1");
+	}
+
+	/**
+	 * Test-ID Board36-7
+	 * 
+	 * @throws Exception
+	 */
+	@Test(expected = Exception.class)
+	public void convertCoordinatesTest10() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("");
 	}
