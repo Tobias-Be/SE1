@@ -202,4 +202,33 @@ public class Boardtest2 {
 		board.placeFigure(coordinate, symbol);
 		
 	}
+	
+	/*
+	 * Test-ID p5
+	 */
+	@Test
+	public void placeFigure5() {
+		Board board = new Board(BOARD_MAX_SIZE);
+		board.placeFigure(coordinate, symbol);
+		assertTrue(board.isRunning());
+	}
+	
+	/*
+	 * Test-ID p6
+	 */
+	@Test
+	public void placeFigure6() {
+		Board board;
+		for (int i = BOARD_MIN_SIZE; i <= BOARD_MAX_SIZE; i++) {
+			board = new Board(i);
+			char[][] helpstate = makeHelpState(board);
+			helpstate[2][3] = 'B';
+			helpstate[2][11] = 'B';
+			helpstate[6][8] = 'B';
+			helpstate[5][5] = 'B';
+			board.setBoardstate(helpstate);	
+			assertTrue(board.isValidMove("1d"));
+			board.placeFigure("1d", symbol);
+		}
+	}
 }
