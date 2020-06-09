@@ -1,7 +1,6 @@
 package dieBoese2;
 
-
-
+import java.util.Scanner;
 
 /**
  * 
@@ -59,14 +58,14 @@ public class HumanPlayer extends Player {
 	 * {@link board#isValidMove(myMove) not valid} he has to give a other input.
 	 */
 	@Override
-	protected void blockSpace(Board board) {
+	protected void blockSpace(Board board, Scanner sc) {
 		System.out.println("Welches Feld wollen Sie blockieren?");
-		myMove = Game.readInput();
+		myMove = sc.next();
 		if (board.isValidMove(myMove)) {
 			board.placeFigure(myMove, 'B');
 		} else {
 			System.out.println("Dieses Feld kann nicht blockiert werden.");
-			blockSpace(board);
+			blockSpace(board, sc);
 		}
 	}
 
@@ -76,14 +75,14 @@ public class HumanPlayer extends Player {
 	 * valid} he has to give a other input.
 	 */
 	@Override
-	protected void makeMove(Board board) {
+	protected void makeMove(Board board, Scanner sc) {
 		System.out.println("Auf welches Feld wollen Sie einen Stein legen?");
-		myMove = Game.readInput();
+		myMove = sc.next();
 		if (board.isValidMove(myMove)) {
 			board.placeFigure(myMove, figure);
 		} else {
 			System.out.println("Sie k�nnen kein Stein auf dieses Feld legen.");
-			makeMove(board);
+			makeMove(board, sc);
 		}
 	}
 }

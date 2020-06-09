@@ -1,4 +1,7 @@
 package dieBoese2;
+
+import java.util.Scanner;
+
 /**
  * 
  * @author Floris Wittner
@@ -24,13 +27,13 @@ char enemyFigure;
 	}
 
 	@Override
-	protected void blockSpace(Board board) {
+	protected void blockSpace(Board board, Scanner sc) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void makeMove(Board board) {
+	protected void makeMove(Board board, Scanner sc) {
 		// TODO Auto-generated method stub
 		
 	}
