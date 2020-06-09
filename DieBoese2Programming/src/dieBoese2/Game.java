@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * @author Thanh Tran 1921390
- * @version 0.2.1
+ * @version 0.3.0
  */
 public class Game {
 
@@ -12,10 +12,10 @@ public class Game {
 	protected Board board;
 	protected Menu menu;
 
-	public Game() {
+	public Game(Scanner sc) {
 		menu = new Menu();
 		// menu settings
-		menu.menuLoop();
+		menu.menuLoop(sc);
 
 		/**
 		 * generates the Players (PvP or PvAI)
@@ -37,15 +37,5 @@ public class Game {
 			p2 = new HumanPlayer('O');
 		else
 			p2 = new AI('O',menu.getDifficulty());
-	}
-
-	protected static String readInput() {
-		Scanner sc = new Scanner(System.in);
-		String input;
-
-		input = sc.next();
-		sc.close();
-
-		return input;
 	}
 }

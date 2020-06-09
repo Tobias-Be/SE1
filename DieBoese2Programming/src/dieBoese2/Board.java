@@ -11,11 +11,9 @@ import java.util.Scanner;
  */
 public class Board {
 
-	int zugcounter = 1;
-	boolean currentPlayer = true;
-
+	private int zugcounter = 1;
+	private boolean currentPlayer = true;
 	private char boardstate[][];
-//    private boolean whoWon; // evtl = currentPlayer ?? - standardmäßig auf true, muss also nicht mehr im Konstruktor übergeben werden. whoWon wird aufgerufen nachdem der winning move gespielt wird!
 	private boolean isRunning = true;
 
 	// getBoardstate, setBoardstate für Testing
@@ -27,6 +25,10 @@ public class Board {
 		this.boardstate = boardstate;
 	}
 	
+	public boolean getcurrentPlayer() {
+		return currentPlayer;
+	}
+
 	Board(int size) {
 		boardstate = new char[size][size];
 		for (int i = 0; i < boardstate.length; i++) {
@@ -35,6 +37,7 @@ public class Board {
 			}
 		}
 	}
+
 	/**
 	 * 
 	 * 
@@ -67,6 +70,7 @@ public class Board {
 		for (int i = 65; i < 65 + boardstate.length; i++) {
 			System.out.print((char) i + "  ");
 		}
+		System.out.println();
 	}
 
 	public static void main(String[] args) {
@@ -96,7 +100,13 @@ public class Board {
 
 		// besetzt
 
-		int[] coords = convertCoordinate(coordinate);
+		int[] coords = null;
+		try {
+			coords = convertCoordinate(coordinate);
+		} catch (Exception e) {
+			System.out.println("Ungültige Eingabe, bitte korigieren!");
+			return false;
+		}
 		int x = coords[0];
 		int y = coords[1];
 
@@ -112,7 +122,7 @@ public class Board {
 		}
 	}
 
-	boolean isRunning() {
+	protected boolean isRunning() {
 		return isRunning;
 	}
 
@@ -124,13 +134,18 @@ public class Board {
 	 * 
 	 * @param coordinate
 	 * @return int[]
+	 * @throws Exception
 	 * 
 	 */
-	protected int[] convertCoordinate(String coordinate) {
+	protected int[] convertCoordinate(String coordinate) throws Exception {
 
 		coordinate = coordinate.toLowerCase();
 		int[] coords = new int[2];
 		int firstChar, secondChar, thirdChar;
+
+		if (coordinate.length() != 2 && coordinate.length() != 3) {
+			throw new Exception("Keine gültige Koordinate");
+		}
 
 		if ((int) coordinate.charAt(0) < 96) {
 			// der erste char ist eine Zahl!
@@ -149,7 +164,7 @@ public class Board {
 				coords[1] = firstChar;
 			}
 
-		} else {
+		} else if ((int) coordinate.charAt(0) > 96) {
 			// Der erste char ist ein Buchstabe!
 			if (coordinate.length() == 3) { // Bsp a12
 				firstChar = (int) coordinate.charAt(0) - 96;
@@ -165,10 +180,13 @@ public class Board {
 				coords[0] = firstChar;
 				coords[1] = secondChar;
 			}
+		} else {
+			throw new Exception("Keine gültige Koordinate");
 		}
 
 		return coords;
 	}
+
 	/**
 	 * 
 	 * 
@@ -179,17 +197,21 @@ public class Board {
 	boolean whoWon() {
 		return currentPlayer;
 	}
+
 	/**
 	 * 
-	 * @param coordinate, symbol
-	 * Checks if there are 5 same symbols in a row
+	 * @param coordinate, symbol: checks if there are 5 same symbols in a row
 	 * 
 	 */
-	protected void checkWin(String coordinate, char symbol) {
+	protected boolean checkWin(String coordinate, char symbol) {
 
-		int[] coords = convertCoordinate(coordinate);
-		int y = coords[0] - 1;
-		int x = coords[1] - 1;
+		int[] coords = null;
+		try {
+			coords = convertCoordinate(coordinate);
+		} catch (Exception e) {
+		}
+		int x = coords[0] - 1;
+		int y = coords[1] - 1;
 
 		// check vertical
 		for (int i = 0; i < 5; i++) {
@@ -200,18 +222,14 @@ public class Board {
 				int offset = i - j;
 				// System.out.println(matches + "+" + j + "+" + symbol + "+" + i);
 				// dont forget to stay inside the bounds of the board
-				if (y + offset >= 0 && y + offset < boardstate.length) {
-					if (boardstate[y + offset][x] == symbol) {
+				if (x + offset >= 0 && x + offset < boardstate.length) {
+					if (boardstate[x + offset][y] == symbol) {
 						matches++;
 					}
 				}
 				if (matches == 5) {
 					isRunning = false;
-					if (this.whoWon()) {
-						System.out.println("Spieler 1 hat gewonnen!");
-					} else {
-						System.out.println("Spieler 2 hat gewonnen!");
-					}
+					return true;
 				}
 			}
 		}
@@ -225,8 +243,8 @@ public class Board {
 			for (int j = 4; j >= 0; j--) {
 				int offset = i - j;
 				// dont forget to stay inside the bounds of the board
-				if (x + offset >= 0 && x + offset < boardstate.length) {
-					if (boardstate[y][x + offset] == symbol) {
+				if (y + offset >= 0 && y + offset < boardstate.length) {
+					if (boardstate[x][y + offset] == symbol) {
 						matches++;
 					}
 				}
@@ -235,13 +253,8 @@ public class Board {
 			// matches on the next position
 			if (matches == 5) {
 				isRunning = false;
-				if (this.whoWon()) {
-					System.out.println("Spieler 1 hat gewonnen!");
-				} else {
-					System.out.println("Spieler 2 hat gewonnen!");
-				}
+				return true;
 			}
-
 		}
 		// check diagonal
 		// simular to the horizontal check, you have to check everything around the last
@@ -254,17 +267,17 @@ public class Board {
 				// now not only 1 variable changes but both, since we move diagonally (this one
 				// is the slash check /)
 				// don't forget to stay in bounds
-				if (x + offset >= 0 && x + offset < boardstate.length && y + offset < boardstate.length
-						&& y + offset >= 0) {
-					if (boardstate[y + offset][x + offset] == symbol) {
+				if (y + offset >= 0 && y + offset < boardstate.length && x + offset < boardstate.length
+						&& x + offset >= 0) {
+					if (boardstate[x + offset][y + offset] == symbol) {
 						matches++;
 					}
 				}
 				// this one is the backslash check \
 				// don't forget to stay in bounds
-				if (x + offset >= 0 && x + offset < boardstate.length && y - offset < boardstate.length
-						&& y - offset >= 0) {
-					if (boardstate[y - offset][x + offset] == symbol) {
+				if (y + offset >= 0 && y + offset < boardstate.length && x - offset < boardstate.length
+						&& x - offset >= 0) {
+					if (boardstate[x - offset][y + offset] == symbol) {
 						matches2++;
 					}
 
@@ -274,27 +287,38 @@ public class Board {
 			// if there is a diagonal / or \ match, we return true
 			if (matches == 5 || matches2 == 5) {
 				isRunning = false;
-				if (this.whoWon()) {
-					System.out.println("Spieler 1 hat gewonnen!");
-				} else {
-					System.out.println("Spieler 2 hat gewonnen!");
-				}
+				return true;
 			}
 		}
+		return false;
 	}
 	/**
 	 * 
-	 * @param coordinate, symbol
-	 * checks, if units should be deleted with the last move
+	 * @return true if win is possible with a certain boardstate, false if not
+	 * 
+	 */
+	
+	protected boolean CheckWinBoolean() {
+		if (isRunning == false) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param coordinate, symbol: checks, if units should be deleted with the last
+	 *                    move
 	 * 
 	 */
 
 	protected void checkDeleted(String coordinate, char symbol) {
 
-		String geschlagen = "\n" + "Es wurden Figuren geschlagen!" + "\n" + "\n"
-				+ "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" + "\n";
-
-		int[] coords = convertCoordinate(coordinate);
+		int[] coords = null;
+		try {
+			coords = convertCoordinate(coordinate);
+		} catch (Exception e) {
+		}
 		int x = coords[0] - 1;
 		int y = coords[1] - 1;
 
@@ -311,32 +335,25 @@ public class Board {
 
 			boardstate[x - 1][y] = ' ';
 			boardstate[x - 2][y] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
 		}
 		// horizontal rechts
 		if (x + 3 < boardstate.length && boardstate[x + 3][y] == symbol && boardstate[x + 1][y] == enemysymbol
 				&& boardstate[x + 2][y] == enemysymbol) {
 			boardstate[x + 1][y] = ' ';
 			boardstate[x + 2][y] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
 		}
 		// vertikal unten
 		if (y - 3 >= 0 && boardstate[x][y - 3] == symbol && boardstate[x][y - 1] == enemysymbol
 				&& boardstate[x][y - 2] == enemysymbol) {
 			boardstate[x][y - 1] = ' ';
 			boardstate[x][y - 2] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
 		}
 		// vertikal oben
 		if (y + 3 < boardstate.length && boardstate[x][y + 3] == symbol && boardstate[x][y + 1] == enemysymbol
 				&& boardstate[x][y + 2] == enemysymbol) {
 			boardstate[x][y + 1] = ' ';
 			boardstate[x][y + 2] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
+
 		}
 
 		// diagonal unten links --> oben rechts
@@ -344,8 +361,6 @@ public class Board {
 				&& boardstate[x + 1][y + 1] == enemysymbol && boardstate[x + 2][y + 2] == enemysymbol) {
 			boardstate[x + 1][y + 1] = ' ';
 			boardstate[x + 2][y + 2] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
 		}
 
 		// diagonal oben rechts --> unten links
@@ -353,8 +368,6 @@ public class Board {
 				&& boardstate[x - 2][y - 2] == enemysymbol) {
 			boardstate[x - 1][y - 1] = ' ';
 			boardstate[x - 2][y - 2] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
 		}
 
 		// diagonal unten rechts --> oben links
@@ -362,8 +375,6 @@ public class Board {
 				&& boardstate[x - 1][y + 1] == enemysymbol && boardstate[x - 2][y + 2] == enemysymbol) {
 			boardstate[x - 1][y + 1] = ' ';
 			boardstate[x - 2][y + 2] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
 		}
 
 		// diagonal oben links --> unten rechts
@@ -371,23 +382,27 @@ public class Board {
 				&& boardstate[x + 1][y - 1] == enemysymbol && boardstate[x + 2][y - 2] == enemysymbol) {
 			boardstate[x + 1][y - 1] = ' ';
 			boardstate[x + 2][y - 2] = ' ';
-			System.out.println(geschlagen);
-			this.printBoard();
 		}
 
 	}
+
 	/**
 	 * 
-	 * @param coordinate, symbol
-	 * places the symbol into the array and gives the parameters to both of the "check"-Methods
+	 * @param coordinate, symbol: places the symbol into the array and gives the
+	 *                    parameters to both of the "check"-Methods
 	 * 
 	 */
 
 	void placeFigure(String coordinate, char symbol) {
 
-		int[] coords = convertCoordinate(coordinate);
+		int[] coords = null;
+		try {
+			coords = convertCoordinate(coordinate);
+		} catch (Exception e) {
+		}
 
 		if (isValidMove(coordinate)) {
+			System.out.println(coords[0]);
 			boardstate[coords[0] - 1][coords[1] - 1] = symbol;
 
 			this.printBoard();
@@ -403,15 +418,13 @@ public class Board {
 			unblockBoard();
 		}
 	}
+
 	/**
 	 * 
 	 * 
 	 * Blocks the board for the 3rd move as intended from the customer
 	 * 
 	 */
-	// Randsteine überschreiben bereits gesetzte Steine der ersten 2 Zügen
-	// bessere Idee als jedes mal zusätzlicher if-clause der für jeden Stein
-	// überprüft ob er leer ist?
 	void blockBoard() {
 
 		// "inneres" Viereck
@@ -464,8 +477,8 @@ public class Board {
 			}
 
 		}
-		this.printBoard();
 	}
+
 	/**
 	 * 
 	 * 
@@ -481,8 +494,6 @@ public class Board {
 				}
 			}
 		}
-
-		this.printBoard();
 	}
 
 	char getSymbol() {
@@ -494,6 +505,6 @@ public class Board {
 	}
 
 	protected void setEnemyMove() {
-
+		// keine Ahnung, was diese Methode machen soll...
 	}
 }

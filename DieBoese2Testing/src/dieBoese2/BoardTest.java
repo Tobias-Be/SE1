@@ -121,10 +121,10 @@ public class BoardTest {
 		assertFalse(board.isValidMove("z2"));
 		assertFalse(board.isValidMove("z35"));
 		assertFalse(board.isValidMove("ab"));
-		assertFalse(board.isValidMove(""));
+		assertFalse(board.isValidMove("55"));
 		assertFalse(board.isValidMove("b"));
 		assertFalse(board.isValidMove("4"));
-		assertFalse(board.isValidMove("55"));
+		assertFalse(board.isValidMove(""));
 	}
 
 	/**
@@ -180,9 +180,11 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board33
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void convertCoordinatesTest1() {
+	public void convertCoordinatesTest1() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		int[] expected = { 1, 1 };
 		assertTrue(Arrays.equals(board.convertCoordinate("a1"), expected));
@@ -211,18 +213,22 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board34
+	 * 
+	 * @throws Exception
 	 */
 	@Test(expected = Exception.class)
-	public void convertCoordinatesTest2() {
+	public void convertCoordinatesTest2() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("p34");
 	}
 
 	/**
 	 * Test-ID Board35
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void convertCoordinatesTest3() {
+	public void convertCoordinatesTest3() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		int[] expected = { 1, 1 };
 		assertTrue(Arrays.equals(board.convertCoordinate("1a"), expected));
@@ -239,54 +245,66 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board36-1
+	 * 
+	 * @throws Exception
 	 */
 	@Test(expected = Exception.class)
-	public void convertCoordinatesTest4() {
+	public void convertCoordinatesTest4() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("1234");
 	}
 
 	/**
 	 * Test-ID Board36-2
+	 * 
+	 * @throws Exception
 	 */
 	@Test(expected = Exception.class)
-	public void convertCoordinatesTest5() {
+	public void convertCoordinatesTest5() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("hallo");
 	}
 
 	/**
 	 * Test-ID Board36-3
+	 * 
+	 * @throws Exception
 	 */
 	@Test(expected = Exception.class)
-	public void convertCoordinatesTest6() {
+	public void convertCoordinatesTest6() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("-23a");
 	}
 
 	/**
 	 * Test-ID Board36-4
+	 * 
+	 * @throws Exception
 	 */
 	@Test(expected = Exception.class)
-	public void convertCoordinatesTest7() {
+	public void convertCoordinatesTest7() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("f-3");
 	}
 
 	/**
 	 * Test-ID Board36-5
+	 * 
+	 * @throws Exception
 	 */
 	@Test(expected = Exception.class)
-	public void convertCoordinatesTest8() {
+	public void convertCoordinatesTest8() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("1");
 	}
 
 	/**
 	 * Test-ID Board36-6
+	 * 
+	 * @throws Exception
 	 */
 	@Test(expected = Exception.class)
-	public void convertCoordinatesTest9() {
+	public void convertCoordinatesTest9() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("");
 	}
