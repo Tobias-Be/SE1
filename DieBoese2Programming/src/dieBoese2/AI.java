@@ -64,8 +64,8 @@ char enemyFigure;
 		char[][] boardAI = board.getBoardstate();
 		
 		
-		int x = boardAI.length+1;
-		int y = boardAI.length+1;
+		int x ;
+		int y ;
 		
 		
 			for(int i = 0 ; i<boardAI.length; i++) {				
@@ -74,7 +74,7 @@ char enemyFigure;
 					x = j;
 			if(boardAI[x][y] == ' ') {
 				boardAI[x][y]= this.figure;
-				int score = minimax(boardAI, x, y, getDepth(), -20000, 20000, false);
+				int score = minimax(boardAI, x, y, getDepth(), Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 				if(score > bestScore) {
 					bestScore = score;
 					bestmove[0]= i;
@@ -119,7 +119,7 @@ char enemyFigure;
 	
 		if (isMaximizing) {
 			for (int i = 0; i < boardAI.length; i++) {
-				for (int j = 0; j < boardAI.length; i++) {
+				for (int j = 0; j < boardAI.length; j++) {
 					if (boardAI[i][j] == ' ') {
 						boardAI[i][j] = this.figure;
 						score = minimax(boardAI,i , j, depth - 1, alpha, beta, false);
@@ -134,7 +134,8 @@ char enemyFigure;
 			return bestChildScore;
 		} else {
 			for (int i = 0; i < boardAI.length; i++) {
-				for (int j = 0; j < boardAI.length; i++) {
+				for (int j = 0; j < boardAI.length; j++) {
+					System.out.println(i + "  +  " + j);
 					if (boardAI[i][j] == ' ') { 
 						boardAI[i][j] = enemyFigure;
 						score = minimax(boardAI,i ,j , depth - 1, alpha, beta, true);
