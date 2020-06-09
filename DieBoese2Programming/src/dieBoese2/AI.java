@@ -13,7 +13,8 @@ int difficulty;
 	}
 	public static void main(String[] args) {
 		AI test = new AI('B',3);
-	
+		Board board = new Board(15);
+	 test.generateMove(board);
 	}
 
 	@Override
@@ -52,11 +53,14 @@ int difficulty;
 		int bestmove[] = new int[2];
 		int bestScore = -20000;
 		char[][] boardAI = board.getBoardstate();
+		
+		
 		int x = boardAI.length+1;
 		int y = boardAI.length+1;
 		
 		
 			for(int i = 0 ; i<boardAI.length; i++) {
+				
 				y = i ;
 				
 				for(int j = 0; j<boardAI.length; j++) {
@@ -65,7 +69,7 @@ int difficulty;
 					
 			if(boardAI[x][y] == ' ') {
 				boardAI[x][y]= this.figure;
-				int score = minimax(boardAI, getDepth(), -20000, 20000, false);
+				int score = minimax(boardAI, x, y, getDepth(), -20000, 20000, false);
 				if(score > bestScore) {
 					bestScore = score;
 					bestmove[0]= i;
@@ -99,63 +103,47 @@ int difficulty;
 		
 	}
 	
-	private int minimax(char[][] boardAI,int depth, int alpha, int beta, boolean isMaximizing) {
+	private int minimax(char[][] boardAI, int xMove, int yMove, int depth, int alpha, int beta, boolean isMaximizing) {
 		return 0;
 	}
-	private int evalBoard(Board board) {
-		if(aiWins(board)) { 
+	private int evalBoard(char[][] boardAI, int xMove, int yMove) {
+		if(figureInARow(boardAI, xMove, yMove) == 5) { 
 		return 20000;
 		}
-		else if(deleteFigure(board)) {
+		else if(deleteFigure(boardAI, xMove, yMove)) {
 			return 10;
 		}
-		else if(fourthFigure(board)) {
+		else if(figureInARow(boardAI, xMove, yMove) == 4){
 			return 5;
-		}else if(thirtFigure(board)) {
+		}else if(figureInARow(boardAI, xMove, yMove) == 3) {
 			return 4;
-		}else if(secondFigure(board)) {
+		}else if(figureInARow(boardAI, xMove, yMove) == 2) {
 			return 4;
 		}
-		else if(middleFigure(board)) {
+		else if(middleFigure(boardAI, xMove, yMove)) {
 			return 2;
 		}
-		else if(externFigure(board)) {
+		else 
 			return 1;
-		}else
-			return 0;
 		
+		
+	}
+	private int figureInARow(char[][] boardAI, int xMove, int yMove) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
-	private int figureInARow(char[][] boardAI) {
-		
-	}
-	private boolean externFigure(Board board) {
+	
+	private boolean deleteFigure(char[][] boardAI, int xMove, int yMove) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	private boolean middleFigure(Board board) {
+	private boolean middleFigure(char[][] boardAI, int xMove, int yMove) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	private boolean secondFigure(Board board) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	private boolean thirtFigure(Board board) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	private boolean fourthFigure(Board board) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	private boolean deleteFigure(Board board) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	private boolean aiWins(Board board) {
-		
-		return false;
-		
-	}
+
+	
+
+	
 }
