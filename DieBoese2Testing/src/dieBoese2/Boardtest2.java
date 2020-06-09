@@ -180,4 +180,26 @@ public class Boardtest2 {
 			board.placeFigure("12c", symbol);
 		}
 	}
+	
+	/*
+	 * Test-ID p3
+	 */
+	@Test(expected = Exception.class)
+	public void placeFigure3() {
+		coordinate = "20a";
+		Board board = new Board(BOARD_MAX_SIZE);
+		board.placeFigure(coordinate, symbol);
+		
+	}
+	
+	/*
+	 * Test-ID p4
+	 */
+	@Test(expected = Exception.class)
+	public void placeFigure4() {
+		coordinate = "16a";
+		Board board = new Board(BOARD_MIN_SIZE);
+		board.placeFigure(coordinate, symbol);
+		
+	}
 }
