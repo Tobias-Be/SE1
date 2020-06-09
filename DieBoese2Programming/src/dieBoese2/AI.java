@@ -7,9 +7,15 @@ package dieBoese2;
  */
 public class AI extends Player {
 int difficulty;
+char enemyFigure;
 	AI(char figure, int difficulty) {
 		super(figure);
 		this.difficulty = difficulty;
+		if(this.figure == 'X') {
+			enemyFigure = 'O';
+		}else{
+			enemyFigure = 'X';
+		}
 	}
 	public static void main(String[] args) {
 		AI test = new AI('B',3);
@@ -51,7 +57,7 @@ int difficulty;
 	}
 	protected int[]generateMove(Board board) {
 		int bestmove[] = new int[2];
-		int bestScore = -20000;
+		int bestScore = Integer.MIN_VALUE;
 		char[][] boardAI = board.getBoardstate();
 		
 		
@@ -59,14 +65,10 @@ int difficulty;
 		int y = boardAI.length+1;
 		
 		
-			for(int i = 0 ; i<boardAI.length; i++) {
-				
-				y = i ;
-				
+			for(int i = 0 ; i<boardAI.length; i++) {				
+				y = i ;		
 				for(int j = 0; j<boardAI.length; j++) {
-			
 					x = j;
-					
 			if(boardAI[x][y] == ' ') {
 				boardAI[x][y]= this.figure;
 				int score = minimax(boardAI, x, y, getDepth(), -20000, 20000, false);
@@ -104,11 +106,49 @@ int difficulty;
 	}
 	
 	private int minimax(char[][] boardAI, int xMove, int yMove, int depth, int alpha, int beta, boolean isMaximizing) {
-		return 0;
+		int bestChildScore = Integer.MIN_VALUE;
+		int score;
+		//abbruch
+		if(depth== 0 || figureInARow(boardAI, xMove, yMove)== 5) {
+			return evalBoard(boardAI, xMove, yMove);
+		}
+
+	
+		if (isMaximizing) {
+			for (int i = 0; i < boardAI.length; i++) {
+				for (int j = 0; j < boardAI.length; i++) {
+					if (boardAI[i][j] == ' ') {
+						boardAI[i][j] = this.figure;
+						score = minimax(boardAI,i , j, depth - 1, alpha, beta, false);
+							boardAI[i][j] = ' ';
+						bestChildScore = Math.max(bestChildScore, score);
+						alpha = Math.max(alpha, score);
+						if (beta <= alpha)
+							break; 
+					}
+				}		
+			}
+			return bestChildScore;
+		} else {
+			for (int i = 0; i < boardAI.length; i++) {
+				for (int j = 0; j < boardAI.length; i++) {
+					if (boardAI[i][j] == ' ') { 
+						boardAI[i][j] = enemyFigure;
+						score = minimax(boardAI,i ,j , depth - 1, alpha, beta, true);
+						boardAI[i][j] = ' ';
+						bestChildScore = Math.min(bestChildScore, score);
+						beta = Math.min(beta, score);
+						if (beta <= alpha)
+							break;
+					}
+				}		
+			}
+			return bestChildScore;
+		}		
 	}
 	private int evalBoard(char[][] boardAI, int xMove, int yMove) {
 		if(figureInARow(boardAI, xMove, yMove) == 5) { 
-		return 20000;
+		return Integer.MAX_VALUE;
 		}
 		else if(deleteFigure(boardAI, xMove, yMove)) {
 			return 10;
