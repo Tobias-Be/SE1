@@ -154,8 +154,8 @@ char enemyFigure;
 		if(figureInARow(boardAI, xMove, yMove) == 5) { 
 		return Integer.MAX_VALUE;
 		}
-		else if(deleteFigure(boardAI, xMove, yMove)) {
-			return 10;
+		else if(deleteFigure(boardAI, xMove, yMove) > 0) {
+			return 10* deleteFigure(boardAI, xMove, yMove);
 		}
 		else if(figureInARow(boardAI, xMove, yMove) == 4){
 			return 5;
@@ -178,9 +178,73 @@ char enemyFigure;
 	}
 	
 	
-	private boolean deleteFigure(char[][] boardAI, int xMove, int yMove) {
-		// TODO Auto-generated method stub
-		return false;
+	private int deleteFigure(char[][] boardAI, int xMove, int yMove) {
+		// x+ y+
+		int deleteFigure = 0;
+	if(xMove+3 < boardAI.length && yMove+3 < boardAI.length) {
+		if(boardAI[xMove+3][yMove+3] == (this.figure)) {
+			if(boardAI[xMove+2][yMove+2]== enemyFigure && boardAI[xMove+1][yMove+1]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+	// x+ y0
+	if(xMove+3 < boardAI.length) {
+		if(boardAI[xMove+3][yMove] == (this.figure)) {
+			if(boardAI[xMove+2][yMove]== enemyFigure && boardAI[xMove+1][yMove]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+	// x+ y-
+	if(xMove+3 < boardAI.length && yMove-3 > boardAI.length) {
+		if(boardAI[xMove+3][yMove-3] == (this.figure)) {
+			if(boardAI[xMove+2][yMove-2]== enemyFigure && boardAI[xMove+1][yMove-1]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+	//x0 y+
+	if(yMove+3 < boardAI.length) {
+		if(boardAI[xMove][yMove+3] == (this.figure)) {
+			if(boardAI[xMove][yMove+2]== enemyFigure && boardAI[xMove][yMove+1]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+	// x0 y-
+	if( yMove-3 > boardAI.length) {
+		if(boardAI[xMove][yMove-3] == (this.figure)) {
+			if(boardAI[xMove][yMove-2]== enemyFigure && boardAI[xMove][yMove-1]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+	// x- y+
+	if(xMove-3 > boardAI.length && yMove+3 < boardAI.length) {
+		if(boardAI[xMove-3][yMove+3] == (this.figure)) {
+			if(boardAI[xMove-2][yMove+2]== enemyFigure && boardAI[xMove-1][yMove+1]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+	// x- y0
+	if(xMove-3 > boardAI.length) {
+		if(boardAI[xMove-3][yMove] == (this.figure)) {
+			if(boardAI[xMove-2][yMove]== enemyFigure && boardAI[xMove-1][yMove]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+	//x- y-
+	if(xMove-3 > boardAI.length && yMove-3 > boardAI.length) {
+		if(boardAI[xMove-3][yMove-3] == (this.figure)) {
+			if(boardAI[xMove-2][yMove-2]== enemyFigure && boardAI[xMove-1][yMove-1]== enemyFigure ) {
+				deleteFigure++;
+			}
+		}
+	}
+		return deleteFigure;
 	}
 	private boolean middleFigure(char[][] boardAI, int xMove, int yMove) {
 		// TODO Auto-generated method stub
