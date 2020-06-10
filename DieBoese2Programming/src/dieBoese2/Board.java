@@ -39,7 +39,7 @@ public class Board {
 		this.boardstate = boardstate;
 	}
 
-	public boolean getcurrentPlayer() {
+	public boolean getCurrentPlayer() {
 		return currentPlayer;
 	}
 
