@@ -21,8 +21,11 @@ char enemyFigure;
 		}
 	}
 	public static void main(String[] args) {
+	System.out.println("test123");
 		AI test = new AI('B',3);
 		Board board = new Board(15);
+		board.initBoard();
+		System.out.println("test321");
 	 test.generateMove(board);
 	}
 
@@ -62,17 +65,17 @@ char enemyFigure;
 		int bestmove[] = new int[2];
 		int bestScore = Integer.MIN_VALUE;
 		char[][] boardAI = board.getBoardstate();
-		
-		
+				
 		int x ;
 		int y ;
-		
-		
+	
 			for(int i = 0 ; i<boardAI.length; i++) {				
 				y = i ;		
 				for(int j = 0; j<boardAI.length; j++) {
 					x = j;
+					
 			if(boardAI[x][y] == ' ') {
+				System.out.println(x + " + " + y);
 				boardAI[x][y]= this.figure;
 				int score = minimax(boardAI, x, y, getDepth(), Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 				if(score > bestScore) {
@@ -89,7 +92,6 @@ char enemyFigure;
 	}
 	private String convertCoordinate(int x, int y) {
 		
-	
 		String coordinates;
 		char xChar = (char)(x+96);
 		if (y<10) {
@@ -107,7 +109,6 @@ char enemyFigure;
 		return coordinates;
 		
 	}
-	
 	private int minimax(char[][] boardAI, int xMove, int yMove, int depth, int alpha, int beta, boolean isMaximizing) {
 		int bestChildScore = Integer.MIN_VALUE;
 		int score;
@@ -116,7 +117,6 @@ char enemyFigure;
 			return evalBoard(boardAI, xMove, yMove);
 		}
 
-	
 		if (isMaximizing) {
 			for (int i = 0; i < boardAI.length; i++) {
 				for (int j = 0; j < boardAI.length; j++) {
@@ -247,7 +247,9 @@ char enemyFigure;
 		return deleteFigure;
 	}
 	private boolean middleFigure(char[][] boardAI, int xMove, int yMove) {
-		// TODO Auto-generated method stub
+		if(boardAI.length/2 -xMove < 5 && boardAI.length- yMove < 5) {
+			return true;
+		}
 		return false;
 	}
 
