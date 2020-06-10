@@ -81,9 +81,10 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board7
+	 * @throws Exception 
 	 */
 	@Test
-	public void isValidMoveTest1() {
+	public void isValidMoveTest1() throws Exception {
 		Board board;
 		for (int i = BOARD_MIN_SIZE; i <= BOARD_MAX_SIZE; i++) {
 			board = new Board(i);
@@ -93,9 +94,10 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board8
+	 * @throws Exception 
 	 */
 	@Test
-	public void isValidMoveTest2() {
+	public void isValidMoveTest2() throws Exception {
 		Board board;
 		for (int i = BOARD_MIN_SIZE; i <= BOARD_MAX_SIZE; i++) {
 			board = new Board(i);
@@ -113,9 +115,10 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board9
+	 * @throws Exception 
 	 */
 	@Test
-	public void isValidMoveTest3() {
+	public void isValidMoveTest3() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		assertFalse(board.isValidMove("a35"));
 		assertFalse(board.isValidMove("z2"));
@@ -129,9 +132,10 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board9-1
+	 * @throws Exception 
 	 */
 	@Test
-	public void isValidMoveTest4() {
+	public void isValidMoveTest4() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
 		assertFalse(board.isValidMove("a16"));
 		board = new Board(BOARD_MAX_SIZE);

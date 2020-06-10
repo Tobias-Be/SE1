@@ -5,13 +5,27 @@ import java.util.Scanner;
 /**
  * 
  * @author Floris Wittner, Nicolas Biundo, Ian Reeves
- * @version 1.0.1
- * @date 06.06.2020
+ * @version 1.0.2
+ * @date 10.06.2020
  *
  */
 public class Board {
 
-	private int zugcounter = 1;
+	public static void main(String[] args) {
+		Board board = new Board(16);
+		board.initBoard();
+		board.printBoard();
+		// Menu menu1 = new Menu();
+		Scanner sc = new Scanner(System.in);
+		// board.printBoard();
+		do {
+			board.placeFigure(sc.nextLine(), board.getSymbol());
+			// menu1.cls();
+		} while (board.isRunning());
+		sc.close();
+	}
+
+	private int zugCounter = 1;
 	private boolean currentPlayer = true;
 	private char boardstate[][];
 	private boolean isRunning = true;
@@ -24,18 +38,21 @@ public class Board {
 	public void setBoardstate(char boardstate[][]) {
 		this.boardstate = boardstate;
 	}
-	
+
 	public boolean getcurrentPlayer() {
 		return currentPlayer;
 	}
 
-	Board(int size) {
-		boardstate = new char[size][size];
+	protected void initBoard() {
 		for (int i = 0; i < boardstate.length; i++) {
-			for (int j = 0; j < boardstate[0].length; j++) {
+			for (int j = 0; j < boardstate.length; j++) {
 				boardstate[i][j] = ' ';
 			}
 		}
+	}
+
+	Board(int size) {
+		boardstate = new char[size][size];
 	}
 
 	/**
@@ -46,6 +63,7 @@ public class Board {
 	 */
 
 	protected void printBoard() {
+
 		int counter = boardstate.length - 1;
 		System.out.print("    ");
 		for (int i = 65; i < 65 + boardstate.length; i++) {
@@ -73,53 +91,99 @@ public class Board {
 		System.out.println();
 	}
 
-	public static void main(String[] args) {
-		Board board = new Board(16);
-		board.printBoard();
-		// Menu menu1 = new Menu();
-		Scanner sc = new Scanner(System.in);
-		// board.printBoard();
-		do {
-			board.placeFigure(sc.nextLine(), board.getSymbol());
-			// menu1.cls();
-		} while (board.isRunning());
-		sc.close();
-	}
-
 	/**
 	 * 
 	 * @param coordinate
 	 * @return true if a figure could be set at coordinate; false if not
+	 * @throws Exception
 	 * 
 	 */
-	protected boolean isValidMove(String coordinate) {
+	protected boolean isValidMove(String coordinate) throws Exception {
 
 		// keine richtige koordinate &&
 		// außerhalb des Spielfelds -> convert überprüft, fehler rückmeldung muss noch
 		// erfastt werden
 
 		// besetzt
+		int validCounter = 0;
+		int charCounter = 0;
+		coordinate = coordinate.toLowerCase();
 
-		int[] coords = null;
 		try {
-			coords = convertCoordinate(coordinate);
+			// check für Länge
+			if (coordinate.length() > 3 || coordinate.length() < 2) {
+				validCounter++;
+				throw new Exception();
+			}
+
+			// check für "zahl""char""zahl" (bspw. 1a1)
+			if (coordinate.length() == 3 && (coordinate.charAt(1) > 96 && coordinate.charAt(1) < 123)) {
+				validCounter++;
+				throw new Exception();
+			}
+
+			// check für Sonderzeichen
+			for (int i = 0; i < coordinate.length(); i++) {
+				if ((int) coordinate.charAt(i) < 48
+						|| (int) coordinate.charAt(i) > 57 && (int) coordinate.charAt(i) < 97
+						|| (int) coordinate.charAt(i) > 122) {
+					validCounter++;
+					throw new Exception();
+				}
+				// check für keinen oder mehrere chars
+				if ((int) coordinate.charAt(i) > 96 && (int) coordinate.charAt(i) < 123) {
+					charCounter++;
+				}
+			}
+			if (charCounter == 0 || charCounter > 1) {
+				validCounter++;
+				throw new Exception();
+			}
+
 		} catch (Exception e) {
-			System.out.println("Ungültige Eingabe, bitte korigieren!");
+			System.err.println("Ungültige Eingabe!");
+		}
+		if (validCounter > 0) {
 			return false;
 		}
+
+		int[] coords = null;
+		coords = convertCoordinate(coordinate);
+
 		int x = coords[0];
 		int y = coords[1];
 
-		if (x > this.boardstate.length || x < 0 || y > this.boardstate[0].length || y < 0) {
-			System.out.println("Diese Koordinate liegt nicht auf dem Spielbrett");
+		try {
+			// check if Inbound
+			if (x > this.boardstate.length || x < 0 || y > this.boardstate.length || y < 0) {
+				validCounter++;
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			System.err.println("Diese Koordinate liegt nicht auf dem Spielbrett!");
+		}
+		if (validCounter > 0) {
 			return false;
 		}
-		if (this.boardstate[x - 1][y - 1] == ' ')
+
+		try {
+			// check if coordinate is free
+			if (this.boardstate[x - 1][y - 1] != ' ') {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			System.err.println("Das Feld " + (char) (coords[0] + 64) + "" + coords[1] + " ist schon belegt.");
+			validCounter++;
+		}
+		if (validCounter > 0) {
+			return false;
+		}
+
+		if (this.boardstate[x - 1][y - 1] == ' ') {
 			return true;
-		else {
-			System.out.println("Das Feld " + coordinate + " ist schon belegt. Geben sie ein neues Feld ein.");
-			return false;
 		}
+
+		return false;
 	}
 
 	protected boolean isRunning() {
@@ -137,17 +201,13 @@ public class Board {
 	 * @throws Exception
 	 * 
 	 */
-	protected int[] convertCoordinate(String coordinate) throws Exception {
+	protected int[] convertCoordinate(String coordinate) {
 
 		coordinate = coordinate.toLowerCase();
 		int[] coords = new int[2];
 		int firstChar, secondChar, thirdChar;
 
-		if (coordinate.length() != 2 && coordinate.length() != 3) {
-			throw new Exception("Keine gültige Koordinate");
-		}
-
-		if ((int) coordinate.charAt(0) < 96) {
+		if ((int) coordinate.charAt(0) < 96 && coordinate.charAt(0) > 48) {
 			// der erste char ist eine Zahl!
 			if (coordinate.length() == 3) { // Bsp 12a
 				firstChar = (int) coordinate.charAt(0) - 48;
@@ -164,7 +224,7 @@ public class Board {
 				coords[1] = firstChar;
 			}
 
-		} else if ((int) coordinate.charAt(0) > 96) {
+		} else if ((int) coordinate.charAt(0) > 96 & coordinate.charAt(0) < 123) {
 			// Der erste char ist ein Buchstabe!
 			if (coordinate.length() == 3) { // Bsp a12
 				firstChar = (int) coordinate.charAt(0) - 96;
@@ -180,17 +240,14 @@ public class Board {
 				coords[0] = firstChar;
 				coords[1] = secondChar;
 			}
-		} else {
-			throw new Exception("Keine gültige Koordinate");
 		}
-
 		return coords;
 	}
 
 	/**
 	 * 
 	 * 
-	 * @return true if a player1 has won, false if player2 won
+	 * @return true if a player1 has won, false if player2 has won
 	 * 
 	 */
 
@@ -257,7 +314,7 @@ public class Board {
 			}
 		}
 		// check diagonal
-		// simular to the horizontal check, you have to check everything around the last
+		// similar to the horizontal check, you have to check everything around the last
 		// coin diagonally from -5 to +5
 		for (int i = 0; i < 5; i++) {
 			int matches2 = 0;
@@ -292,18 +349,6 @@ public class Board {
 		}
 		return false;
 	}
-	/**
-	 * 
-	 * @return true if win is possible with a certain boardstate, false if not
-	 * 
-	 */
-	
-	protected boolean CheckWinBoolean() {
-		if (isRunning == false) {
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * 
@@ -312,8 +357,9 @@ public class Board {
 	 * 
 	 */
 
-	protected void checkDeleted(String coordinate, char symbol) {
+	protected boolean checkDeleted(String coordinate, char symbol) {
 
+		int delCounter = 0;
 		int[] coords = null;
 		try {
 			coords = convertCoordinate(coordinate);
@@ -335,25 +381,32 @@ public class Board {
 
 			boardstate[x - 1][y] = ' ';
 			boardstate[x - 2][y] = ' ';
+			delCounter++;
+			checkDeleted(coordinate, symbol);
 		}
 		// horizontal rechts
 		if (x + 3 < boardstate.length && boardstate[x + 3][y] == symbol && boardstate[x + 1][y] == enemysymbol
 				&& boardstate[x + 2][y] == enemysymbol) {
 			boardstate[x + 1][y] = ' ';
 			boardstate[x + 2][y] = ' ';
+			delCounter++;
+			checkDeleted(coordinate, symbol);
 		}
 		// vertikal unten
 		if (y - 3 >= 0 && boardstate[x][y - 3] == symbol && boardstate[x][y - 1] == enemysymbol
 				&& boardstate[x][y - 2] == enemysymbol) {
 			boardstate[x][y - 1] = ' ';
 			boardstate[x][y - 2] = ' ';
+			delCounter++;
+			checkDeleted(coordinate, symbol);
 		}
 		// vertikal oben
 		if (y + 3 < boardstate.length && boardstate[x][y + 3] == symbol && boardstate[x][y + 1] == enemysymbol
 				&& boardstate[x][y + 2] == enemysymbol) {
 			boardstate[x][y + 1] = ' ';
 			boardstate[x][y + 2] = ' ';
-
+			delCounter++;
+			checkDeleted(coordinate, symbol);
 		}
 
 		// diagonal unten links --> oben rechts
@@ -361,6 +414,8 @@ public class Board {
 				&& boardstate[x + 1][y + 1] == enemysymbol && boardstate[x + 2][y + 2] == enemysymbol) {
 			boardstate[x + 1][y + 1] = ' ';
 			boardstate[x + 2][y + 2] = ' ';
+			delCounter++;
+			checkDeleted(coordinate, symbol);
 		}
 
 		// diagonal oben rechts --> unten links
@@ -368,6 +423,8 @@ public class Board {
 				&& boardstate[x - 2][y - 2] == enemysymbol) {
 			boardstate[x - 1][y - 1] = ' ';
 			boardstate[x - 2][y - 2] = ' ';
+			delCounter++;
+			checkDeleted(coordinate, symbol);
 		}
 
 		// diagonal unten rechts --> oben links
@@ -375,6 +432,9 @@ public class Board {
 				&& boardstate[x - 1][y + 1] == enemysymbol && boardstate[x - 2][y + 2] == enemysymbol) {
 			boardstate[x - 1][y + 1] = ' ';
 			boardstate[x - 2][y + 2] = ' ';
+			delCounter++;
+			checkDeleted(coordinate, symbol);
+
 		}
 
 		// diagonal oben links --> unten rechts
@@ -382,8 +442,14 @@ public class Board {
 				&& boardstate[x + 1][y - 1] == enemysymbol && boardstate[x + 2][y - 2] == enemysymbol) {
 			boardstate[x + 1][y - 1] = ' ';
 			boardstate[x + 2][y - 2] = ' ';
+			delCounter++;
+			checkDeleted(coordinate, symbol);
 		}
-
+		if (delCounter > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -396,26 +462,31 @@ public class Board {
 	void placeFigure(String coordinate, char symbol) {
 
 		int[] coords = null;
+
 		try {
-			coords = convertCoordinate(coordinate);
+			if (isValidMove(coordinate)) {
+				coords = convertCoordinate(coordinate);
+				boardstate[coords[0] - 1][coords[1] - 1] = symbol;
+
+				if (zugCounter != 2 && zugCounter != 3) {
+					this.printBoard();
+				}
+				this.checkDeleted(coordinate, symbol);
+				this.checkWin(coordinate, symbol);
+
+				currentPlayer = !currentPlayer;
+				zugCounter++;
+			}
 		} catch (Exception e) {
+			System.out.println("Ich dürfte nie geworfen werden!");
 		}
 
-		if (isValidMove(coordinate)) {
-			System.out.println(coords[0]);
-			boardstate[coords[0] - 1][coords[1] - 1] = symbol;
-
-			this.printBoard();
-			this.checkDeleted(coordinate, symbol);
-			this.checkWin(coordinate, symbol);
-
-			currentPlayer = !currentPlayer;
-			zugcounter++;
-		}
-		if (zugcounter == 3) {
+		if (zugCounter == 3) {
 			blockBoard();
-		} else if (zugcounter == 4) {
+			this.printBoard();
+		} else if (zugCounter == 4) {
 			unblockBoard();
+			this.printBoard();
 		}
 	}
 
@@ -504,7 +575,13 @@ public class Board {
 		}
 	}
 
-	protected void setEnemyMove() {
-		// keine Ahnung, was diese Methode machen soll...
+	/**
+	 * only for KI vs KI
+	 * 
+	 * 
+	 * @param move
+	 */
+	protected void setEnemyMove(int[] move) {
+
 	}
 }
