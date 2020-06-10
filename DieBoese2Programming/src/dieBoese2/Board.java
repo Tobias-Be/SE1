@@ -1,7 +1,5 @@
 package dieBoese2;
 
-
-
 import java.util.Scanner;
 
 /**
@@ -12,8 +10,6 @@ import java.util.Scanner;
  *
  */
 public class Board {
-	
-
 
 	public static void main(String[] args) {
 		Board board = new Board(16);
@@ -43,10 +39,10 @@ public class Board {
 		this.boardstate = boardstate;
 	}
 
-	public boolean getcurrentPlayer() {
+	public boolean getCurrentPlayer() {
 		return currentPlayer;
 	}
-	
+
 	protected void initBoard() {
 		for (int i = 0; i < boardstate.length; i++) {
 			for (int j = 0; j < boardstate.length; j++) {
@@ -55,7 +51,6 @@ public class Board {
 		}
 	}
 
-	
 	Board(int size) {
 		boardstate = new char[size][size];
 	}
@@ -68,7 +63,7 @@ public class Board {
 	 */
 
 	protected void printBoard() {
-		
+
 		int counter = boardstate.length - 1;
 		System.out.print("    ");
 		for (int i = 65; i < 65 + boardstate.length; i++) {
@@ -110,20 +105,20 @@ public class Board {
 		// erfastt werden
 
 		// besetzt
-		int validCounter = 0;
+		int exceptionCounter = 0;
 		int charCounter = 0;
 		coordinate = coordinate.toLowerCase();
 
 		try {
 			// check für Länge
 			if (coordinate.length() > 3 || coordinate.length() < 2) {
-				validCounter++;
+				exceptionCounter++;
 				throw new Exception();
 			}
-			
+
 			// check für "zahl""char""zahl" (bspw. 1a1)
 			if (coordinate.length() == 3 && (coordinate.charAt(1) > 96 && coordinate.charAt(1) < 123)) {
-				validCounter++;
+				exceptionCounter++;
 				throw new Exception();
 			}
 
@@ -132,23 +127,23 @@ public class Board {
 				if ((int) coordinate.charAt(i) < 48
 						|| (int) coordinate.charAt(i) > 57 && (int) coordinate.charAt(i) < 97
 						|| (int) coordinate.charAt(i) > 122) {
-					validCounter++;
+					exceptionCounter++;
 					throw new Exception();
 				}
 				// check für keinen oder mehrere chars
-				if((int) coordinate.charAt(i) > 96 && (int) coordinate.charAt(i) < 123) {
-					charCounter++;					
+				if ((int) coordinate.charAt(i) > 96 && (int) coordinate.charAt(i) < 123) {
+					charCounter++;
 				}
 			}
-			if(charCounter == 0 || charCounter > 1) {
-				validCounter++;
+			if (charCounter == 0 || charCounter > 1) {
+				exceptionCounter++;
 				throw new Exception();
-				}
-			
+			}
+
 		} catch (Exception e) {
 			System.err.println("Ungültige Eingabe!");
 		}
-		if(validCounter > 0) {
+		if (exceptionCounter > 0) {
 			return false;
 		}
 
@@ -161,37 +156,30 @@ public class Board {
 		try {
 			// check if Inbound
 			if (x > this.boardstate.length || x < 0 || y > this.boardstate.length || y < 0) {
-				validCounter++;
+				exceptionCounter++;
 				throw new Exception();
 			}
 		} catch (Exception e) {
 			System.err.println("Diese Koordinate liegt nicht auf dem Spielbrett!");
 		}
-		if(validCounter > 0) {
+		if (exceptionCounter > 0) {
 			return false;
 		}
-		
-			try {
-				// check if coordinate is free
-				if (this.boardstate[x - 1][y - 1] != ' ') {
-					throw new Exception();
-				}
-			} catch (Exception e) {
-				System.err.println("Das Feld " + (char) (coords[0] + 64) + "" + coords[1]
-						+ " ist schon belegt.");
-				validCounter++;
+
+		try {
+			// check if coordinate is free
+			if (this.boardstate[x - 1][y - 1] != ' ') {
+				throw new Exception();
 			}
-			if(validCounter > 0) {
-				return false;
-			}
-			
-		if (this.boardstate[x - 1][y - 1] == ' ') {
-			return true;
+		} catch (Exception e) {
+			System.err.println("Das Feld " + (char) (coords[0] + 64) + "" + coords[1] + " ist schon belegt.");
+			exceptionCounter++;
 		}
-
-		return false;
+		if (exceptionCounter > 0) {
+			return false;
+		}
+		return true;
 	}
-
 
 	protected boolean isRunning() {
 		return isRunning;
@@ -360,7 +348,7 @@ public class Board {
 	/**
 	 * 
 	 * @param coordinate, symbol: checks, if units should be deleted with the last
-	 *                    move
+	 *        move
 	 * 
 	 */
 
@@ -462,7 +450,7 @@ public class Board {
 	/**
 	 * 
 	 * @param coordinate, symbol: places the symbol into the array and gives the
-	 *                    parameters to both of the "check"-Methods
+	 *        parameters to both of the "check"-Methods
 	 * 
 	 */
 
@@ -474,9 +462,9 @@ public class Board {
 			if (isValidMove(coordinate)) {
 				coords = convertCoordinate(coordinate);
 				boardstate[coords[0] - 1][coords[1] - 1] = symbol;
-				
-				if(zugCounter != 2 && zugCounter != 3) {
-				this.printBoard();
+
+				if (zugCounter != 2 && zugCounter != 3) {
+					this.printBoard();
 				}
 				this.checkDeleted(coordinate, symbol);
 				this.checkWin(coordinate, symbol);
