@@ -81,7 +81,8 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board7
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void isValidMoveTest1() throws Exception {
@@ -94,7 +95,8 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board8
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void isValidMoveTest2() throws Exception {
@@ -115,7 +117,8 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board9
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void isValidMoveTest3() throws Exception {
@@ -132,7 +135,8 @@ public class BoardTest {
 
 	/**
 	 * Test-ID Board9-1
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void isValidMoveTest4() throws Exception {
@@ -220,10 +224,20 @@ public class BoardTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = Exception.class)
+	@Test
 	public void convertCoordinatesTest2() throws Exception {
 		Board board = new Board(BOARD_MIN_SIZE);
-		board.convertCoordinate("p34");
+		int[] expected = { 16, 24 };
+		assertTrue(Arrays.equals(board.convertCoordinate("p24"), expected));
+		assertTrue(Arrays.equals(board.convertCoordinate("24p"), expected));
+		expected[0] = 19;
+		expected[1] = 2;
+		assertTrue(Arrays.equals(board.convertCoordinate("s2"), expected));
+		assertTrue(Arrays.equals(board.convertCoordinate("2s"), expected));
+		expected[0] = 5;
+		expected[1] = 38;
+		assertTrue(Arrays.equals(board.convertCoordinate("e38"), expected));
+		assertTrue(Arrays.equals(board.convertCoordinate("38e"), expected));
 	}
 
 	/**
@@ -290,7 +304,7 @@ public class BoardTest {
 		Board board = new Board(BOARD_MIN_SIZE);
 		board.convertCoordinate("f-3");
 	}
-	
+
 	/**
 	 * Test-ID Board36-5
 	 * 
