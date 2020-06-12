@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * @author Thanh Tran 1921390
- * @version 0.3.0
+ * @version 1.0.0
  */
 public class Game {
 
@@ -33,7 +33,7 @@ public class Game {
 
 		p1 = new HumanPlayer('X');
 
-		if(getPvPorAI)
+		if(!getPvPorAI)
 			p2 = new HumanPlayer('O');
 		else
 			p2 = new AI('O',menu.getDifficulty());
