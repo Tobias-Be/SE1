@@ -11,10 +11,17 @@ import java.util.Scanner;
 public class AI extends Player {
 	int difficulty;
 	char enemyFigure;
+	boolean hard;
 
 	AI(char figure, int difficulty) {
 		super(figure);
 		this.difficulty = difficulty;
+		if(difficulty == 3) {
+			hard = true;
+		}else {
+			hard = false;
+		}
+		
 		if (this.figure == 'X') {
 			enemyFigure = 'O';
 		} else {
@@ -46,7 +53,15 @@ public class AI extends Player {
 
 	@Override
 	protected void makeMove(Board board, Scanner sc) {
+		long start = System.currentTimeMillis();
 		int[] arrayBlock = generateMove(board);
+		long end =  System.currentTimeMillis();
+		if(start-end < 60000 && hard == true) {
+			difficulty++;
+		}else if(start-end > 120000 && hard == true) {
+			difficulty--;
+		}
+		
 		String myMove = convertCoordinate(arrayBlock[0], arrayBlock[1]);
 		if (board.isValidMove(myMove)) {
 			board.placeFigure(myMove, figure);
