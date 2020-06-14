@@ -202,8 +202,127 @@ public class AI extends Player {
 	}
 
 	private int figureInARow(char[][] boardAI, int xMove, int yMove) {
-		// TODO Auto-generated method stub
-		return 0;
+		int highestRow= 1;
+		int row= 1;
+		// x ->
+		if(boardAI[xMove-1][yMove]== figure) {
+			row++;
+			if(boardAI[xMove-2][yMove]== figure) {
+				row++;
+				if(boardAI[xMove-3][yMove]== figure) {
+					row++;
+					if(boardAI[xMove-4][yMove]== figure) {
+						row++;
+					}
+				}	
+			}
+		}
+		if(boardAI[xMove+1][yMove]== figure) {
+			row++;
+			if(boardAI[xMove+2][yMove]== figure) {
+				row++;
+				if(boardAI[xMove+3][yMove]== figure) {
+					row++;
+					if(boardAI[xMove+4][yMove]== figure) {
+						row++;
+					}
+				}	
+			}
+		}
+		if(row> highestRow) {
+			highestRow = row;
+		}
+		//y 
+		if(boardAI[xMove][yMove-1]== figure) {
+			row++;
+			if(boardAI[xMove][yMove-2]== figure) {
+				row++;
+				if(boardAI[xMove][yMove-3]== figure) {
+					row++;
+					if(boardAI[xMove][yMove-4]== figure) {
+						row++;
+					
+					}
+				}	
+			}
+		}
+		if(boardAI[xMove][yMove+1]== figure) {
+			row++;
+			if(boardAI[xMove][yMove+2]== figure) {
+				row++;
+				if(boardAI[xMove][yMove+3]== figure) {
+					row++;
+					if(boardAI[xMove][yMove+4]== figure) {
+						row++;
+						
+					}
+				}	
+			}
+		}
+		
+		if(row> highestRow) {
+			highestRow = row;
+		}
+		
+		if(boardAI[xMove-1][yMove-1]== figure) {
+			row++;
+			if(boardAI[xMove-2][yMove-2]== figure) {
+				row++;
+				if(boardAI[xMove-3][yMove-3]== figure) {
+					row++;
+					if(boardAI[xMove-4][yMove-4]== figure) {
+						row++;
+					}
+				}	
+			}
+		}
+		
+		if(boardAI[xMove+1][yMove+1]== figure) {
+			row++;
+			if(boardAI[xMove+2][yMove+2]== figure) {
+				row++;
+				if(boardAI[xMove+3][yMove+3]== figure) {
+					row++;
+					if(boardAI[xMove+4][yMove+4]== figure) {
+						row++;
+					}
+				}	
+			}
+		}
+		if(row> highestRow) {
+			highestRow = row;
+		}
+		
+		if(boardAI[xMove+1][yMove-1]== figure) {
+			row++;
+			if(boardAI[xMove+2][yMove-2]== figure) {
+				row++;
+				if(boardAI[xMove+3][yMove-3]== figure) {
+					row++;
+					if(boardAI[xMove+4][yMove-4]== figure) {
+						row++;
+					}
+				}	
+			}
+		}
+		
+		if(boardAI[xMove-1][yMove+1]== figure) {
+			row++;
+			if(boardAI[xMove-2][yMove+2]== figure) {
+				row++;
+				if(boardAI[xMove-3][yMove+3]== figure) {
+					row++;
+					if(boardAI[xMove-4][yMove+4]== figure) {
+						row++;
+					}
+				}	
+			}
+		}
+		if(row> highestRow) {
+			highestRow = row;
+		}
+		
+		return highestRow;
 	}
 
 	private int deleteFigure(char[][] boardAI, int xMove, int yMove) {
