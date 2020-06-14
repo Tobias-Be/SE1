@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * 
  * @author Floris Wittner
- * @version V 0.1.2.
+ * @version V 0.2.0.
  *
  */
 public class AI extends Player {
@@ -30,12 +30,10 @@ public class AI extends Player {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("test123");
 		AI test = new AI('B', 3);
 		Board board = new Board(15);
 		board.initBoard();
-		System.out.println("test321");
-		test.generateMove(board);
+			test.generateMove(board);
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class AI extends Player {
 		long end =  System.currentTimeMillis();
 		if(start-end < 60000 && hard == true) {
 			difficulty++;
-		}else if(start-end > 120000 && hard == true) {
+		}else if(start-end > 120000 && hard == true && difficulty >= 2 ) {
 			difficulty--;
 		}
 		
