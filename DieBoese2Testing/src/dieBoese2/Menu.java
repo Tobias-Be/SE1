@@ -15,10 +15,8 @@ public class Menu {
 	}
 
 //Start of menu loop
-	void menuLoop() {
+	void menuLoop(Scanner keyboard) {
 		int choice = 0;
-		// TODO: The scanner should be passed to the Menu from The main or the game...
-		Scanner keyboard = new Scanner(System.in);
 		boolean weChillInMenu = true;
 		do {
 			this.cls();
@@ -285,10 +283,10 @@ public class Menu {
 	
 
 	// for testing
-	public static void main(String[] Args) {
-		Menu menu = new Menu();
-		menu.menuLoop();
-		System.out.println("This is where the game should start...");
-
-	}
+//	public static void main(String[] Args) {
+//		Menu menu = new Menu();
+//		menu.menuLoop();
+//		System.out.println("This is where the game should start...");
+//
+//	}
 }
