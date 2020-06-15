@@ -1,5 +1,7 @@
 package dieBoese2;
 
+import java.util.Scanner;
+
 /**
  * 
  * @author Floris Wittner 1921233
@@ -31,13 +33,15 @@ public abstract class Player {
 	 * 
 	 * @param board
 	 */
-	protected abstract void blockSpace(Board board);
+	protected abstract void blockSpace(Board board, Scanner sc);
 
 	/**
 	 * HumanPlayer and AI has to set their figure at a Space
 	 * 
 	 * @param board
 	 */
-	protected abstract void makeMove(Board board);
+	protected abstract void makeMove(Board board, Scanner sc);
 
+	
+	
 }
