@@ -283,10 +283,10 @@ public class Menu {
 	
 
 	// for testing
-//	public static void main(String[] Args) {
-//		Menu menu = new Menu();
-//		menu.menuLoop();
-//		System.out.println("This is where the game should start...");
-//
-//	}
+	public static void main(String[] Args) {
+		Menu menu = new Menu();
+		menu.menuLoop();
+		System.out.println("This is where the game should start...");
+
+	}
 }
