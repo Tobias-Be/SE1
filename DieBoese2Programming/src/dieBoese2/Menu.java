@@ -2,7 +2,7 @@ package dieBoese2;
 
 import java.util.Scanner;
 
-//V.1.1.0
+//V.1.2.4
 //Author - Gabriel Kremensas
 public class Menu {
 	private int boardSize = 15; // board size 15= 15x15, 16=16x16, ...
@@ -177,7 +177,7 @@ public class Menu {
 		System.out.println(
 				"║ 5: Beginnenden Spieler ändern        (Momentan Beginnender Spieler: " + stringWhoBegins() + ")  ║");
 		System.out.println("║                                                                                ║");
-		System.out.println("║ 6: Speil verlassen                                                             ║");
+		System.out.println("║ 6: Spiel verlassen                                                             ║");
 		System.out.println("╚════════════════════════════════════════════════════════════════════════════════╝");
 	}
 
@@ -282,11 +282,4 @@ public class Menu {
 	
 	
 
-	// for testing
-	public static void main(String[] Args) {
-		Menu menu = new Menu();
-		menu.menuLoop();
-		System.out.println("This is where the game should start...");
-
-	}
 }
