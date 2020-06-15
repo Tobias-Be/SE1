@@ -5,7 +5,7 @@ import org.junit.Test;
 
 /*
  *  @author Sarah
- *  @date 07.06.20
+ *  @date 11.06.20
  */
 
 public class Boardtest2 {
@@ -249,7 +249,7 @@ public class Boardtest2 {
 
 	/*
 	 * Test-ID p2
-	 */
+	 */ 
 	@Test
 	public void placeFigure2() {
 		Board board;
