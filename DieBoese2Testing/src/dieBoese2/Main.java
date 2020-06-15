@@ -4,7 +4,7 @@ import java.util.Scanner;
 /**
  * 
  * @author Nasir Ahmad 
- * @version 1.2.2
+ * @version 1.2.3
  *
  */
 
@@ -19,7 +19,9 @@ public class Main {
 		
 		for(int i=0;i<3;i++) {
 			
+			game.board.printBoard();
 			game.p1.blockSpace(game.board,input);
+			game.board.printBoard();
 			game.p2.blockSpace(game.board,input);
 		}
 		
@@ -46,11 +48,15 @@ public class Main {
 				game.board.printBoard();
 			}
 			
-			System.out.println("Glueckwunsch "+game.board.whoWon()+". Sie haben gewonnen!");
-			
-			game = new Game(); 
-			
+			if(game.board.whoWon()==true) {
+				System.out.println("Glueckwunsch Spieler 'X' hat gewonnen!");
+			}
+			else {
+				System.out.println("Glueckwunsch Spieler 'O' hat gewonnen!");
+			}
+				
 		}
 		
+		game = new Game(input); 
 	}
 }
