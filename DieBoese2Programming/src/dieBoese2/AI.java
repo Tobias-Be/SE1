@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class AI extends Player {
 	int difficulty;
 	char enemyFigure;
-	boolean hard;
+	boolean hard; 
 
 	AI(char figure, int difficulty) {
 		super(figure);
@@ -29,17 +29,17 @@ public class AI extends Player {
 		}
 	}
 
-	public static void main(String[] args) {
-		AI test = new AI('B', 3);
-		Board board = new Board(15);
-		board.initBoard();
-			test.generateMove(board);
-	}
+//	public static void main(String[] args) {
+//		AI test = new AI('B', 3);
+//		Board board = new Board(15);
+//		board.initBoard();
+//			test.generateMove(board);
+//	}
 
 	@Override
 	protected void blockSpace(Board board, Scanner sc) {
 		int[] arrayBlock = generateBlockMove(board);
-		String myMove = convertCoordinate(arrayBlock[0], arrayBlock[1]);
+		String myMove = convertCoordinate(arrayBlock[0]+1, arrayBlock[1]+1);
 		if (board.isValidMove(myMove)) {
 			board.placeFigure(myMove, 'B');
 		} else {
@@ -60,11 +60,11 @@ public class AI extends Player {
 			difficulty--;
 		}
 		
-		String myMove = convertCoordinate(arrayBlock[0], arrayBlock[1]);
+		String myMove = convertCoordinate(arrayBlock[0]+1, arrayBlock[1]+1);
 		if (board.isValidMove(myMove)) {
 			board.placeFigure(myMove, figure);
 		} else {
-			System.out.println("AI hat versuch ein Feld zu blockieren");
+			System.out.println("AI hat versuch ein Stein zu legen");
 			makeMove(board, sc);
 		}
 
@@ -77,16 +77,16 @@ public class AI extends Player {
 	protected int[] generateBlockMove(Board board) {
 		int blockedField[] = new int[2];
 
-		int x = board.getBoardstate().length + 1;
-		int y = board.getBoardstate().length + 1;
-		while (!board.isValidMove(convertCoordinate(x, y))) {
-			x = (int) Math.random() * board.getBoardstate().length;
-			y = (int) Math.random() * board.getBoardstate().length;
+		int x = (int) (Math.random() * board.getBoardstate().length)+1;
+		int y = (int) (Math.random() * board.getBoardstate().length)+1;
+		
+		
 			blockedField[0] = x;
 			blockedField[1] = y;
 
-		}
 
+System.out.println("x"+ x);
+System.out.println("y"+ y);
 		return blockedField;
 
 	}
@@ -136,7 +136,7 @@ public class AI extends Player {
 			System.out.println(yyChar);
 			coordinates = String.valueOf(xChar) + String.valueOf(yyChar) + String.valueOf(yChar);
 		}
-
+		System.out.println(coordinates);
 		return coordinates;
 
 	}
@@ -205,25 +205,25 @@ public class AI extends Player {
 		int highestRow= 1;
 		int row= 1;
 		// x ->
-		if(boardAI[xMove-1][yMove]== figure) {
+		if(0 < xMove-1 && boardAI[xMove-1][yMove]== figure) {
 			row++;
-			if(boardAI[xMove-2][yMove]== figure) {
+			if(0 < xMove-2 &&boardAI[xMove-2][yMove]== figure) {
 				row++;
-				if(boardAI[xMove-3][yMove]== figure) {
+				if(0 < xMove-3 && boardAI[xMove-3][yMove]== figure) {
 					row++;
-					if(boardAI[xMove-4][yMove]== figure) {
+					if(0 < xMove-4 &&boardAI[xMove-4][yMove]== figure) {
 						row++;
 					}
 				}	
 			}
 		}
-		if(boardAI[xMove+1][yMove]== figure) {
+		if(boardAI.length > xMove+1 &&boardAI[xMove+1][yMove]== figure) {
 			row++;
-			if(boardAI[xMove+2][yMove]== figure) {
+			if(boardAI.length > xMove+2 && boardAI[xMove+2][yMove]== figure) {
 				row++;
-				if(boardAI[xMove+3][yMove]== figure) {
+				if(boardAI.length > xMove+3 &&boardAI[xMove+3][yMove]== figure) {
 					row++;
-					if(boardAI[xMove+4][yMove]== figure) {
+					if(boardAI.length > xMove+4 &&boardAI[xMove+4][yMove]== figure) {
 						row++;
 					}
 				}	
@@ -233,26 +233,26 @@ public class AI extends Player {
 			highestRow = row;
 		}
 		//y 
-		if(boardAI[xMove][yMove-1]== figure) {
+		if(0 < yMove-1 && boardAI[xMove][yMove-1]== figure) {
 			row++;
-			if(boardAI[xMove][yMove-2]== figure) {
+			if(0 < yMove-2 && boardAI[xMove][yMove-2]== figure) {
 				row++;
-				if(boardAI[xMove][yMove-3]== figure) {
+				if(0 < yMove-3 &&boardAI[xMove][yMove-3]== figure) {
 					row++;
-					if(boardAI[xMove][yMove-4]== figure) {
+					if(0 < yMove-4 && boardAI[xMove][yMove-4]== figure) {
 						row++;
 					
 					}
 				}	
 			}
 		}
-		if(boardAI[xMove][yMove+1]== figure) {
+		if(boardAI.length > yMove+1 && boardAI[xMove][yMove+1]== figure) {
 			row++;
-			if(boardAI[xMove][yMove+2]== figure) {
+			if(boardAI.length > yMove+2 && boardAI[xMove][yMove+2]== figure) {
 				row++;
-				if(boardAI[xMove][yMove+3]== figure) {
+				if(boardAI.length > yMove+3 && boardAI[xMove][yMove+3]== figure) {
 					row++;
-					if(boardAI[xMove][yMove+4]== figure) {
+					if(boardAI.length > yMove+4 &&boardAI[xMove][yMove+4]== figure) {
 						row++;
 						
 					}
@@ -264,26 +264,26 @@ public class AI extends Player {
 			highestRow = row;
 		}
 		
-		if(boardAI[xMove-1][yMove-1]== figure) {
+		if(0 < yMove-1 &&0 < xMove-1 && boardAI[xMove-1][yMove-1]== figure) {
 			row++;
-			if(boardAI[xMove-2][yMove-2]== figure) {
+			if(0 < yMove-2 &&0 < xMove-2 && boardAI[xMove-2][yMove-2]== figure) {
 				row++;
-				if(boardAI[xMove-3][yMove-3]== figure) {
+				if(0 < yMove-3 &&0 < xMove-3 &&boardAI[xMove-3][yMove-3]== figure) {
 					row++;
-					if(boardAI[xMove-4][yMove-4]== figure) {
+					if(0 < yMove-4 &&0 < xMove-4 &&boardAI[xMove-4][yMove-4]== figure) {
 						row++;
 					}
 				}	
 			}
 		}
 		
-		if(boardAI[xMove+1][yMove+1]== figure) {
+		if(boardAI.length > xMove+1 && boardAI.length > yMove+1 &&boardAI[xMove+1][yMove+1]== figure) {
 			row++;
-			if(boardAI[xMove+2][yMove+2]== figure) {
+			if(boardAI.length > xMove+2 && boardAI.length > yMove+2 &&boardAI[xMove+2][yMove+2]== figure) {
 				row++;
-				if(boardAI[xMove+3][yMove+3]== figure) {
+				if(boardAI.length > xMove+3 && boardAI.length > yMove+3 &&boardAI[xMove+3][yMove+3]== figure) {
 					row++;
-					if(boardAI[xMove+4][yMove+4]== figure) {
+					if(boardAI.length > xMove+4 && boardAI.length > yMove+4 && boardAI[xMove+4][yMove+4]== figure) {
 						row++;
 					}
 				}	
@@ -293,26 +293,26 @@ public class AI extends Player {
 			highestRow = row;
 		}
 		
-		if(boardAI[xMove+1][yMove-1]== figure) {
+		if(boardAI.length > xMove+1 && 0 < yMove-1 && boardAI[xMove+1][yMove-1]== figure) {
 			row++;
-			if(boardAI[xMove+2][yMove-2]== figure) {
+			if(boardAI.length > xMove+2 && 0 < yMove-2 && boardAI[xMove+2][yMove-2]== figure) {
 				row++;
-				if(boardAI[xMove+3][yMove-3]== figure) {
+				if(boardAI.length > xMove+3 && 0 < yMove-3 &&boardAI[xMove+3][yMove-3]== figure) {
 					row++;
-					if(boardAI[xMove+4][yMove-4]== figure) {
+					if(boardAI.length > xMove+4 && 0 < yMove-4 && boardAI[xMove+4][yMove-4]== figure) {
 						row++;
 					}
 				}	
 			}
 		}
 		
-		if(boardAI[xMove-1][yMove+1]== figure) {
+		if( 0 < xMove-1 && boardAI.length > yMove+1 &&boardAI[xMove-1][yMove+1]== figure) {
 			row++;
-			if(boardAI[xMove-2][yMove+2]== figure) {
+			if(0 < xMove-2 && boardAI.length > yMove+2 && boardAI[xMove-2][yMove+2]== figure) {
 				row++;
-				if(boardAI[xMove-3][yMove+3]== figure) {
+				if(0 < xMove-3 && boardAI.length > yMove+3 && boardAI[xMove-3][yMove+3]== figure) {
 					row++;
-					if(boardAI[xMove-4][yMove+4]== figure) {
+					if(0 < xMove-4 && boardAI.length > yMove+4 &&boardAI[xMove-4][yMove+4]== figure) {
 						row++;
 					}
 				}	
