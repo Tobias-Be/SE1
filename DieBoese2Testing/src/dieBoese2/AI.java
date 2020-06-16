@@ -77,8 +77,8 @@ public class AI extends Player {
 	protected int[] generateBlockMove(Board board) {
 		int blockedField[] = new int[2];
 
-		int x = (int) (Math.random() * board.getBoardstate().length)+1;
-		int y = (int) (Math.random() * board.getBoardstate().length)+1;
+		int x = (int) (Math.random() * board.getBoardstate().length);
+		int y = (int) (Math.random() * board.getBoardstate().length);
 		
 		
 			blockedField[0] = x;
@@ -120,7 +120,12 @@ System.out.println("y"+ y);
 		return bestmove;
 
 	}
-
+/**
+ * needs coordinate from 1-15
+ * @param x
+ * @param y
+ * @return
+ */
 	private String convertCoordinate(int x, int y) {
 
 		String coordinates;

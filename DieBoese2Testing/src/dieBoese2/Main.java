@@ -20,10 +20,10 @@ public class Main {
 		for(int i=0;i<3;i++) {
 			
 			game.board.printBoard();
-			System.out.println(game.p1 + "blockiert");
+//			System.out.println(game.p1 + "blockiert");
 			game.p1.blockSpace(game.board,input);
 			game.board.printBoard();
-			System.out.println(game.p2 + "blockiert");
+//			System.out.println(game.p2 + "blockiert");
 			game.p2.blockSpace(game.board,input);
 		}
 		
