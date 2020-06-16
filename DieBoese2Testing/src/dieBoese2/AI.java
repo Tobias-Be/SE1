@@ -94,20 +94,22 @@ System.out.println("y"+ y);
 	protected int[] generateMove(Board board) {
 		int bestmove[] = new int[2];
 		int bestScore = Integer.MIN_VALUE;
-		char[][] boardAI = board.getBoardstate();
+		char[][] boardAI = board.getBoardstate().clone();
 
 		int x;
 		int y;
 
 		for (int i = 0; i < boardAI.length; i++) {
-			y = i;
+			x = i;
 			for (int j = 0; j < boardAI.length; j++) {
-				x = j;
-
+				y = j;
 				if (boardAI[x][y] == ' ') {
-					System.out.println(x + " + " + y);
+//					System.out.println((char) boardAI[x][y]);
+//					System.out.println(x + " + " + y);
 					boardAI[x][y] = this.figure;
 					int score = minimax(boardAI, x, y, getDepth(), Integer.MIN_VALUE, Integer.MAX_VALUE, false);
+//					System.out.println(score);
+					boardAI[x][y] = ' ';
 					if (score > bestScore) {
 						bestScore = score;
 						bestmove[0] = i;
@@ -147,7 +149,7 @@ System.out.println("y"+ y);
 	}
 
 	private int minimax(char[][] boardAI, int xMove, int yMove, int depth, int alpha, int beta, boolean isMaximizing) {
-		int bestChildScore = Integer.MIN_VALUE;
+		int bestChildScore;
 		int score;
 		// abbruch
 		if (depth == 0 || figureInARow(boardAI, xMove, yMove) == 5) {
@@ -155,11 +157,13 @@ System.out.println("y"+ y);
 		}
 
 		if (isMaximizing) {
+			bestChildScore = Integer.MIN_VALUE;
 			for (int i = 0; i < boardAI.length; i++) {
 				for (int j = 0; j < boardAI.length; j++) {
 					if (boardAI[i][j] == ' ') {
 						boardAI[i][j] = this.figure;
 						score = minimax(boardAI, i, j, depth - 1, alpha, beta, false);
+//						System.out.println(score);
 						boardAI[i][j] = ' ';
 						bestChildScore = Math.max(bestChildScore, score);
 						alpha = Math.max(alpha, score);
@@ -170,9 +174,10 @@ System.out.println("y"+ y);
 			}
 			return bestChildScore;
 		} else {
+			bestChildScore  = Integer.MAX_VALUE;
 			for (int i = 0; i < boardAI.length; i++) {
 				for (int j = 0; j < boardAI.length; j++) {
-					System.out.println(i + "  +  " + j);
+//					System.out.println(i + "  +  " + j);
 					if (boardAI[i][j] == ' ') {
 						boardAI[i][j] = enemyFigure;
 						score = minimax(boardAI, i, j, depth - 1, alpha, beta, true);
