@@ -111,6 +111,7 @@ System.out.println("y"+ y);
 //					System.out.println(score);
 					boardAI[x][y] = ' ';
 					if (score > bestScore) {
+						System.out.println("score > bestscore  " + score + " " + bestScore+ "x  "+ i+ "y  "+ j );
 						bestScore = score;
 						bestmove[0] = i;
 						bestmove[1] = j;
@@ -119,6 +120,7 @@ System.out.println("y"+ y);
 
 			}
 		}
+		System.out.println("x " + bestmove[0]+ "y "+ bestmove[1] + "evaluierung  " + evalBoard(boardAI, bestmove[0], bestmove[1], figure));
 		return bestmove;
 
 	}
@@ -151,15 +153,17 @@ System.out.println("y"+ y);
 	private int minimax(char[][] boardAI, int xMove, int yMove, int depth, int alpha, int beta, boolean isMaximizing) {
 		int bestChildScore;
 		int score;
-		char figureRow;
+		char figureRow = figure;
 		// abbruch
-		if(isMaximizing) {
-			figureRow = figure;
-		}else {
-			figureRow = enemyFigure;
-		}
-		if (depth == 0 || figureInARow(boardAI, xMove, yMove, figureRow) == 5) {
+//		if(isMaximizing) {
+//			figureRow = figure;
+//		}else {
+//			figureRow = enemyFigure;
+//		}
+		if (depth == 0 || figureInARow(boardAI, xMove, yMove, figure) == 5) {
+//			System.out.println(evalBoard(boardAI, xMove, yMove, figureRow));
 			return evalBoard(boardAI, xMove, yMove, figureRow);
+			
 		}
 
 		if (isMaximizing) {
@@ -200,21 +204,38 @@ System.out.println("y"+ y);
 	}
 
 	private int evalBoard(char[][] boardAI, int xMove, int yMove, char figureRow) {
-		if (figureInARow(boardAI, xMove, yMove, figureRow) == 5) {
-			return Integer.MAX_VALUE;
-		} else if (deleteFigure(boardAI, xMove, yMove) > 0) {
-			return 10 * deleteFigure(boardAI, xMove, yMove);
-		} else if (figureInARow(boardAI, xMove, yMove, figureRow) == 4) {
-			return 5;
-		} else if (figureInARow(boardAI, xMove, yMove, figureRow) == 3) {
-			return 4;
-		} else if (figureInARow(boardAI, xMove, yMove, figureRow) == 2) {
-			return 4;
-		} else if (middleFigure(boardAI, xMove, yMove)) {
-			return 2;
-		} else
-			return 1;
+		char figureEnemyRow;
+		int eval = 0;
+		if(figureRow== figure) {
+		figureEnemyRow = enemyFigure;}
+		else {figureEnemyRow = figure;}
+		if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 5) {
+			eval -= Integer.MAX_VALUE-100;
+		}  if (deleteFigure(boardAI, xMove, yMove) > 0) {
+			eval -= 10 * deleteFigure(boardAI, xMove, yMove);
+		}  if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 4) {
+			eval -= 5;
+		}  if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 3) {
+			eval -= 4;
+		}  if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 2) {
+			eval -= 4;
+		}
 
+		if (figureInARow(boardAI, xMove, yMove, figureRow) == 5) {
+			eval += Integer.MAX_VALUE-100;
+		}  if (deleteFigure(boardAI, xMove, yMove) > 0) {
+			eval += 10 * deleteFigure(boardAI, xMove, yMove);
+		}  if (figureInARow(boardAI, xMove, yMove, figureRow) == 4) {
+			eval += 5;
+		}  if (figureInARow(boardAI, xMove, yMove, figureRow) == 3) {
+			eval += 4;
+		}  if (figureInARow(boardAI, xMove, yMove, figureRow) == 2) {
+			eval += 4;
+		}  if (middleFigure(boardAI, xMove, yMove)) {
+			eval += 2;
+		} else {
+			eval += 1;}
+			return eval;
 	}
 
 	private int figureInARow(char[][] boardAI, int xMove, int yMove, char figureRow) {
