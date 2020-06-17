@@ -6,10 +6,11 @@ import java.util.Scanner;
  * 
  * @author Floris Wittner, Nicolas Biundo, Ian Reeves
  * @version 1.0.2
- * @date 10.06.2020
+ * @date 17.06.2020
  *
  */
 public class Board {
+
 
 	public static void main(String[] args) {
 		Board board = new Board(16);
@@ -25,7 +26,6 @@ public class Board {
 		sc.close();
 	}
 
-	private int zugCounter = 1;
 	private boolean currentPlayer = true;
 	private char boardstate[][];
 	private boolean isRunning = true;
@@ -53,11 +53,7 @@ public class Board {
 
 	Board(int size) {
 		boardstate = new char[size][size];
-		for (int i = 0; i < boardstate.length; i++) {
-			for (int j = 0; j < boardstate.length; j++) {
-				boardstate[i][j] = ' ';
-			}
-		}
+		initBoard();
 	}
 
 	/**
@@ -222,7 +218,7 @@ public class Board {
 	 * 
 	 */
 
-	boolean whoWon() {
+	protected boolean whoWon() {
 		return currentPlayer;
 	}
 
@@ -354,7 +350,6 @@ public class Board {
 			boardstate[x - 1][y] = ' ';
 			boardstate[x - 2][y] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
 		}
 		// horizontal rechts
 		if (x + 3 < boardstate.length && boardstate[x + 3][y] == symbol && boardstate[x + 1][y] == enemysymbol
@@ -362,7 +357,6 @@ public class Board {
 			boardstate[x + 1][y] = ' ';
 			boardstate[x + 2][y] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
 		}
 		// vertikal unten
 		if (y - 3 >= 0 && boardstate[x][y - 3] == symbol && boardstate[x][y - 1] == enemysymbol
@@ -370,7 +364,6 @@ public class Board {
 			boardstate[x][y - 1] = ' ';
 			boardstate[x][y - 2] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
 		}
 		// vertikal oben
 		if (y + 3 < boardstate.length && boardstate[x][y + 3] == symbol && boardstate[x][y + 1] == enemysymbol
@@ -378,7 +371,6 @@ public class Board {
 			boardstate[x][y + 1] = ' ';
 			boardstate[x][y + 2] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
 		}
 
 		// diagonal unten links --> oben rechts
@@ -387,7 +379,6 @@ public class Board {
 			boardstate[x + 1][y + 1] = ' ';
 			boardstate[x + 2][y + 2] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
 		}
 
 		// diagonal oben rechts --> unten links
@@ -396,7 +387,6 @@ public class Board {
 			boardstate[x - 1][y - 1] = ' ';
 			boardstate[x - 2][y - 2] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
 		}
 
 		// diagonal unten rechts --> oben links
@@ -405,8 +395,6 @@ public class Board {
 			boardstate[x - 1][y + 1] = ' ';
 			boardstate[x - 2][y + 2] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
-
 		}
 
 		// diagonal oben links --> unten rechts
@@ -415,7 +403,6 @@ public class Board {
 			boardstate[x + 1][y - 1] = ' ';
 			boardstate[x + 2][y - 2] = ' ';
 			delCounter++;
-			checkDeleted(coordinate, symbol);
 		}
 		if (delCounter > 0) {
 			return true;
@@ -445,21 +432,11 @@ public class Board {
 
 			boardstate[coords[0] - 1][coords[1] - 1] = symbol;
 
-			if (zugCounter != 2 && zugCounter != 3) {
-				this.printBoard();
-			}
-			this.checkDeleted(coordinate, symbol);
-			this.checkWin(coordinate, symbol);
+			
+			this.checkDeleted(coordinate, getSymbol());
+			this.checkWin(coordinate, getSymbol());
 
 			currentPlayer = !currentPlayer;
-			zugCounter++;
-		}
-		if (zugCounter == 3) {
-			blockBoard();
-			this.printBoard();
-		} else if (zugCounter == 4) {
-			unblockBoard();
-			this.printBoard();
 		}
 	}
 
@@ -555,6 +532,6 @@ public class Board {
 	 * @param move
 	 */
 	protected void setEnemyMove(int[] move) {
-
+		
 	}
 }
