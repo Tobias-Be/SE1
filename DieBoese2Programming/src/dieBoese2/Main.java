@@ -4,7 +4,7 @@ import java.util.Scanner;
 /**
  * 
  * @author Nasir Ahmad 
- * @version 1.2.3
+ * @version 1.2.4
  *
  */
 
@@ -51,10 +51,10 @@ public class Main {
 			}
 		}			
 			if(game.board.whoWon()==true) {
-				System.out.println("Glueckwunsch Spieler 'X' hat gewonnen!");
+				System.out.println("Glueckwunsch Spieler 'O' hat gewonnen!");
 			}
 			else {
-				System.out.println("Glueckwunsch Spieler 'O' hat gewonnen!");
+				System.out.println("Glueckwunsch Spieler 'X' hat gewonnen!");
 			}
 				
 		
