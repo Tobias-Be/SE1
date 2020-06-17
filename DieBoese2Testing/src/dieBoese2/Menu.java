@@ -2,7 +2,7 @@ package dieBoese2;
 
 import java.util.Scanner;
 
-//V.1.2.5
+//V.1.2.4
 //Author - Gabriel Kremensas
 public class Menu {
 	private int boardSize = 15; // board size 15= 15x15, 16=16x16, ...

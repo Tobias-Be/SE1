@@ -111,6 +111,7 @@ System.out.println("y"+ y);
 //					System.out.println(score);
 					boardAI[x][y] = ' ';
 					if (score > bestScore) {
+						System.out.println("score > bestscore  " + score + " " + bestScore+ "x  "+ i+ "y  "+ j );
 						bestScore = score;
 						bestmove[0] = i;
 						bestmove[1] = j;
@@ -119,6 +120,7 @@ System.out.println("y"+ y);
 
 			}
 		}
+		System.out.println("x " + bestmove[0]+ "y "+ bestmove[1] + "evaluierung  " + evalBoard(boardAI, bestmove[0], bestmove[1], figure));
 		return bestmove;
 
 	}
@@ -151,9 +153,17 @@ System.out.println("y"+ y);
 	private int minimax(char[][] boardAI, int xMove, int yMove, int depth, int alpha, int beta, boolean isMaximizing) {
 		int bestChildScore;
 		int score;
+		char figureRow = figure;
 		// abbruch
-		if (depth == 0 || figureInARow(boardAI, xMove, yMove) == 5) {
-			return evalBoard(boardAI, xMove, yMove);
+//		if(isMaximizing) {
+//			figureRow = figure;
+//		}else {
+//			figureRow = enemyFigure;
+//		}
+		if (depth == 0 || figureInARow(boardAI, xMove, yMove, figure) == 5) {
+//			System.out.println(evalBoard(boardAI, xMove, yMove, figureRow));
+			return evalBoard(boardAI, xMove, yMove, figureRow);
+			
 		}
 
 		if (isMaximizing) {
@@ -193,47 +203,64 @@ System.out.println("y"+ y);
 		}
 	}
 
-	private int evalBoard(char[][] boardAI, int xMove, int yMove) {
-		if (figureInARow(boardAI, xMove, yMove) == 5) {
-			return Integer.MAX_VALUE;
-		} else if (deleteFigure(boardAI, xMove, yMove) > 0) {
-			return 10 * deleteFigure(boardAI, xMove, yMove);
-		} else if (figureInARow(boardAI, xMove, yMove) == 4) {
-			return 5;
-		} else if (figureInARow(boardAI, xMove, yMove) == 3) {
-			return 4;
-		} else if (figureInARow(boardAI, xMove, yMove) == 2) {
-			return 4;
-		} else if (middleFigure(boardAI, xMove, yMove)) {
-			return 2;
-		} else
-			return 1;
+	private int evalBoard(char[][] boardAI, int xMove, int yMove, char figureRow) {
+		char figureEnemyRow;
+		int eval = 0;
+		if(figureRow== figure) {
+		figureEnemyRow = enemyFigure;}
+		else {figureEnemyRow = figure;}
+		if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 5) {
+			eval -= Integer.MAX_VALUE-100;
+		}  if (deleteFigure(boardAI, xMove, yMove) > 0) {
+			eval -= 10 * deleteFigure(boardAI, xMove, yMove);
+		}  if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 4) {
+			eval -= 5;
+		}  if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 3) {
+			eval -= 4;
+		}  if (figureInARow(boardAI, xMove, yMove, figureEnemyRow) == 2) {
+			eval -= 4;
+		}
 
+		if (figureInARow(boardAI, xMove, yMove, figureRow) == 5) {
+			eval += Integer.MAX_VALUE-100;
+		}  if (deleteFigure(boardAI, xMove, yMove) > 0) {
+			eval += 10 * deleteFigure(boardAI, xMove, yMove);
+		}  if (figureInARow(boardAI, xMove, yMove, figureRow) == 4) {
+			eval += 5;
+		}  if (figureInARow(boardAI, xMove, yMove, figureRow) == 3) {
+			eval += 4;
+		}  if (figureInARow(boardAI, xMove, yMove, figureRow) == 2) {
+			eval += 4;
+		}  if (middleFigure(boardAI, xMove, yMove)) {
+			eval += 2;
+		} else {
+			eval += 1;}
+			return eval;
 	}
 
-	private int figureInARow(char[][] boardAI, int xMove, int yMove) {
+	private int figureInARow(char[][] boardAI, int xMove, int yMove, char figureRow) {
 		int highestRow= 1;
 		int row= 1;
 		// x ->
-		if(0 < xMove-1 && boardAI[xMove-1][yMove]== figure) {
+		if(0 < xMove-1 && boardAI[xMove-1][yMove]== figureRow) {
 			row++;
-			if(0 < xMove-2 &&boardAI[xMove-2][yMove]== figure) {
+			if(0 < xMove-2 &&boardAI[xMove-2][yMove]== figureRow) {
 				row++;
-				if(0 < xMove-3 && boardAI[xMove-3][yMove]== figure) {
+				if(0 < xMove-3 && boardAI[xMove-3][yMove]== figureRow) {
 					row++;
-					if(0 < xMove-4 &&boardAI[xMove-4][yMove]== figure) {
+					if(0 < xMove-4 &&boardAI[xMove-4][yMove]== figureRow) {
 						row++;
 					}
 				}	
 			}
 		}
-		if(boardAI.length > xMove+1 &&boardAI[xMove+1][yMove]== figure) {
+		if(boardAI.length > xMove+1 &&boardAI[xMove+1][yMove]== figureRow) {
 			row++;
-			if(boardAI.length > xMove+2 && boardAI[xMove+2][yMove]== figure) {
+			if(boardAI.length > xMove+2 && boardAI[xMove+2][yMove]== figureRow) {
 				row++;
-				if(boardAI.length > xMove+3 &&boardAI[xMove+3][yMove]== figure) {
+				if(boardAI.length > xMove+3 &&boardAI[xMove+3][yMove]== figureRow) {
 					row++;
-					if(boardAI.length > xMove+4 &&boardAI[xMove+4][yMove]== figure) {
+					if(boardAI.length > xMove+4 &&boardAI[xMove+4][yMove]== figureRow) {
 						row++;
 					}
 				}	
@@ -243,26 +270,26 @@ System.out.println("y"+ y);
 			highestRow = row;
 		}
 		//y 
-		if(0 < yMove-1 && boardAI[xMove][yMove-1]== figure) {
+		if(0 < yMove-1 && boardAI[xMove][yMove-1]== figureRow) {
 			row++;
-			if(0 < yMove-2 && boardAI[xMove][yMove-2]== figure) {
+			if(0 < yMove-2 && boardAI[xMove][yMove-2]== figureRow) {
 				row++;
-				if(0 < yMove-3 &&boardAI[xMove][yMove-3]== figure) {
+				if(0 < yMove-3 &&boardAI[xMove][yMove-3]== figureRow) {
 					row++;
-					if(0 < yMove-4 && boardAI[xMove][yMove-4]== figure) {
+					if(0 < yMove-4 && boardAI[xMove][yMove-4]== figureRow) {
 						row++;
 					
 					}
 				}	
 			}
 		}
-		if(boardAI.length > yMove+1 && boardAI[xMove][yMove+1]== figure) {
+		if(boardAI.length > yMove+1 && boardAI[xMove][yMove+1]== figureRow) {
 			row++;
-			if(boardAI.length > yMove+2 && boardAI[xMove][yMove+2]== figure) {
+			if(boardAI.length > yMove+2 && boardAI[xMove][yMove+2]== figureRow) {
 				row++;
-				if(boardAI.length > yMove+3 && boardAI[xMove][yMove+3]== figure) {
+				if(boardAI.length > yMove+3 && boardAI[xMove][yMove+3]== figureRow) {
 					row++;
-					if(boardAI.length > yMove+4 &&boardAI[xMove][yMove+4]== figure) {
+					if(boardAI.length > yMove+4 &&boardAI[xMove][yMove+4]== figureRow) {
 						row++;
 						
 					}
@@ -274,26 +301,26 @@ System.out.println("y"+ y);
 			highestRow = row;
 		}
 		
-		if(0 < yMove-1 &&0 < xMove-1 && boardAI[xMove-1][yMove-1]== figure) {
+		if(0 < yMove-1 &&0 < xMove-1 && boardAI[xMove-1][yMove-1]== figureRow) {
 			row++;
-			if(0 < yMove-2 &&0 < xMove-2 && boardAI[xMove-2][yMove-2]== figure) {
+			if(0 < yMove-2 &&0 < xMove-2 && boardAI[xMove-2][yMove-2]== figureRow) {
 				row++;
-				if(0 < yMove-3 &&0 < xMove-3 &&boardAI[xMove-3][yMove-3]== figure) {
+				if(0 < yMove-3 &&0 < xMove-3 &&boardAI[xMove-3][yMove-3]== figureRow) {
 					row++;
-					if(0 < yMove-4 &&0 < xMove-4 &&boardAI[xMove-4][yMove-4]== figure) {
+					if(0 < yMove-4 &&0 < xMove-4 &&boardAI[xMove-4][yMove-4]== figureRow) {
 						row++;
 					}
 				}	
 			}
 		}
 		
-		if(boardAI.length > xMove+1 && boardAI.length > yMove+1 &&boardAI[xMove+1][yMove+1]== figure) {
+		if(boardAI.length > xMove+1 && boardAI.length > yMove+1 &&boardAI[xMove+1][yMove+1]== figureRow) {
 			row++;
-			if(boardAI.length > xMove+2 && boardAI.length > yMove+2 &&boardAI[xMove+2][yMove+2]== figure) {
+			if(boardAI.length > xMove+2 && boardAI.length > yMove+2 &&boardAI[xMove+2][yMove+2]== figureRow) {
 				row++;
-				if(boardAI.length > xMove+3 && boardAI.length > yMove+3 &&boardAI[xMove+3][yMove+3]== figure) {
+				if(boardAI.length > xMove+3 && boardAI.length > yMove+3 &&boardAI[xMove+3][yMove+3]== figureRow) {
 					row++;
-					if(boardAI.length > xMove+4 && boardAI.length > yMove+4 && boardAI[xMove+4][yMove+4]== figure) {
+					if(boardAI.length > xMove+4 && boardAI.length > yMove+4 && boardAI[xMove+4][yMove+4]== figureRow) {
 						row++;
 					}
 				}	
@@ -303,26 +330,26 @@ System.out.println("y"+ y);
 			highestRow = row;
 		}
 		
-		if(boardAI.length > xMove+1 && 0 < yMove-1 && boardAI[xMove+1][yMove-1]== figure) {
+		if(boardAI.length > xMove+1 && 0 < yMove-1 && boardAI[xMove+1][yMove-1]== figureRow) {
 			row++;
-			if(boardAI.length > xMove+2 && 0 < yMove-2 && boardAI[xMove+2][yMove-2]== figure) {
+			if(boardAI.length > xMove+2 && 0 < yMove-2 && boardAI[xMove+2][yMove-2]== figureRow) {
 				row++;
-				if(boardAI.length > xMove+3 && 0 < yMove-3 &&boardAI[xMove+3][yMove-3]== figure) {
+				if(boardAI.length > xMove+3 && 0 < yMove-3 &&boardAI[xMove+3][yMove-3]== figureRow) {
 					row++;
-					if(boardAI.length > xMove+4 && 0 < yMove-4 && boardAI[xMove+4][yMove-4]== figure) {
+					if(boardAI.length > xMove+4 && 0 < yMove-4 && boardAI[xMove+4][yMove-4]== figureRow) {
 						row++;
 					}
 				}	
 			}
 		}
 		
-		if( 0 < xMove-1 && boardAI.length > yMove+1 &&boardAI[xMove-1][yMove+1]== figure) {
+		if( 0 < xMove-1 && boardAI.length > yMove+1 &&boardAI[xMove-1][yMove+1]== figureRow) {
 			row++;
-			if(0 < xMove-2 && boardAI.length > yMove+2 && boardAI[xMove-2][yMove+2]== figure) {
+			if(0 < xMove-2 && boardAI.length > yMove+2 && boardAI[xMove-2][yMove+2]== figureRow) {
 				row++;
-				if(0 < xMove-3 && boardAI.length > yMove+3 && boardAI[xMove-3][yMove+3]== figure) {
+				if(0 < xMove-3 && boardAI.length > yMove+3 && boardAI[xMove-3][yMove+3]== figureRow) {
 					row++;
-					if(0 < xMove-4 && boardAI.length > yMove+4 &&boardAI[xMove-4][yMove+4]== figure) {
+					if(0 < xMove-4 && boardAI.length > yMove+4 &&boardAI[xMove-4][yMove+4]== figureRow) {
 						row++;
 					}
 				}	
